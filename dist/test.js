@@ -8,16 +8,14 @@ function run() {
     return tslib_1.__awaiter(this, void 0, void 0, function* () {
         const bitmex = new BitmexAPI_1.BitmexAPI(config);
         try {
-            const orders = yield bitmex.Leaderboard.get({ method: 'ROE' });
-            console.log(orders);
-            // for (const order of orders) {
-            //     console.log(order.)
-            // }
+            const bucket = yield bitmex.Trade.getBucketed({ binSize: '1m' });
+            for (const b of bucket) {
+                console.log(b);
+            }
         }
         catch (e) {
             console.log(e);
         }
-        // console.log(chat);
     });
 }
 run();
