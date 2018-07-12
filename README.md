@@ -1,21 +1,24 @@
-# BitMEX-nodejs - BitMEX API connector written with typescript
+## BitMEX-nodejs - unofficial BitMEX API connector written with typescript
 
-## Installation
+*All types and methods are automatically generated from BitMEX official Swagger Specification*
 
-`npm install bitmex-node`
+#### Installation  
 
-## Live Example
+  - CLI installation: `npm install bitmex-node`
+  - Create API keys: https://www.bitmex.com/app/apiKeys
+  - Recommended code editor: [Visual studio code](https://code.visualstudio.com/)
+
+#### Live Example
 
 ![visual studio code - bitmex node](https://user-images.githubusercontent.com/3116399/42608773-033cc7ec-8592-11e8-93aa-31ae365072bc.gif)
 
-##  Code Example
+####  Code Example
 
 ```typescript
 
 import { BitmexAPI } from "bitmex-node";
 
 const bitmex = new BitmexAPI({
-    // https://www.bitmex.com/app/apiKeys
     "apiKeyID": "NXTy391NCdhrrSWzsJE_xktb",
     "apiKeySecret": "bPVQ51-xxI7bRcuAAOlvH0wUFpPvusfmC1dF6zyy4s3v8Mgd"
 );
@@ -28,9 +31,9 @@ const bitmex = new BitmexAPI({
 
 ```
 
-## Features:
+#### Features:
 
-- Automatically generates a typed API from [BitMEX API Explorer](https://www.bitmex.com/api/explorer/#/)
+- [BitMEX API Explorer](https://www.bitmex.com/api/explorer/#/)
 - [Authentication](https://www.bitmex.com/app/apiKeysUsage)
 - [Native promises](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)
 - [Rate limiting](https://www.bitmex.com/app/restAPI#Request-Rate-Limits)
