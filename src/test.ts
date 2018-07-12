@@ -6,17 +6,10 @@ const config = require(resolve(__dirname, '../config.json'));
 async function run () {
     const bitmex = new BitmexAPI(config);
     try {
-        const orders = await bitmex.Leaderboard.get({ method: 'ROE' })
-        
-        console.log(orders);
-        // for (const order of orders) {
-        //     console.log(order.)
-        // }
-        
+        const user = await bitmex.User.get();
+        console.log(user);
     } catch(e) {
         console.log(e);
     }
-    // console.log(chat);
-}
 
 run();
