@@ -3,11 +3,13 @@ export const CONTAINER = 'BITMEX';
 const toEntries = (obj: any) => Object.keys(obj).map(key => [key, obj[key]]);
 const titleCase = (w: string) => w.charAt(0).toUpperCase() + w.substr(1).toLowerCase();
 const eTitleCase = (text: string) => text.replace(/\/(\w)/g, (a, w) => titleCase(w));
-const commentSeperator = (text: string) => (text || '').replace(/(\w{2}\.)\s+/g, '$1\n').split('\n');
 const normalizeDefinition = (text: string) => text.replace('#/definitions/', '').replace('x-any', 'any');
 const enumMapper = (d: string) => `'${d.trim()}'`;
 
-const descriptionEnumRegexps = [    
+const commentSeperator = (text: string) =>
+    (text || '').split('\n').map(line => line.trim()).map(line => line ? ' * ' + line : ' *');
+
+const descriptionEnumRegexps = [
     /Available options: \[(.+?)\]/,
     /Valid options: (.+?)\./,
     /Options: ((["'`])\w+\2(?:,\s*\2\w+\2)*)/
@@ -23,7 +25,7 @@ export class SwaggerParser {
     private getResponseType(responses: any) {
         let responseType = 'any';
         for (const [status, res] of toEntries(responses)) {
-            if (status !== '200') continue;
+            if (status !== '200') { continue; }
             switch (res.schema.type) {
                 case 'array':
                     responseType = CONTAINER + '.' + normalizeDefinition(res.schema.items.$ref) + '[]';
@@ -59,7 +61,7 @@ export class SwaggerParser {
             let key: string;
             if (p.in === 'formData') {
                 key = `${title}${titleCase(method)}`;
-                opts = 'formData';
+                opts = 'form';
                 arg = `${CONTAINER}.${key}`;
             } else if (p.in === 'query') {
                 key = `${title}Query`;
@@ -90,12 +92,12 @@ export class SwaggerParser {
             }
 
             pArray.push('');
-            if (p.description) {                
+            if (p.description) {
                 pArray.push(`/**`);
-                commentSeperator(p.description).forEach(line => pArray.push(` * ${line}`));
+                commentSeperator(p.description).forEach(line => pArray.push(line));
                 pArray.push(` */`);
             }
-            
+
             pArray.push(`${p.name}${required ? '' : '?'}: ${type};${comment}`);
             this.parametersMap.set(key, pArray);
         }
@@ -132,10 +134,20 @@ export class SwaggerParser {
                 let row = `${prop}: ${arg};`;
 
                 const comments: string[] = [];
-                if (def.format) comments.push(`format: ${def.format}`);
-                if (def.maxLength) comments.push(`maxLength: ${def.maxLength}`);
-                if (def.default) { comments.push(`default: ${typeof def.default === 'object' ? JSON.stringify(def.default) : def.default}`); }
-                if (comments.length) row += ' // ' + comments.join(', ');
+
+                if (def.format) {
+                    comments.push(`format: ${def.format}`);
+                }
+
+                if (def.maxLength) {
+                    comments.push(`maxLength: ${def.maxLength}`);
+
+                }
+                if (def.default) {
+                    comments.push(`default: ${typeof def.default === 'object' ? JSON.stringify(def.default) : def.default}`);
+                }
+
+                if (comments.length) { row += ' // ' + comments.join(', '); }
 
                 const arr = this.definitionsMap.get(name) || [];
                 arr.push(row);
@@ -145,8 +157,8 @@ export class SwaggerParser {
 
         for (const [path, methods] of toEntries(data.paths)) {
             for (let [method, def] of toEntries(methods)) {
-                if (def.deprecated) continue;
-                
+                if (def.deprecated) { continue; }
+
                 // TODO: use def.Tags
                 const authorized = typeof def.security === 'undefined';
                 const [type, name] = (<string>def.operationId).split('.');
@@ -160,8 +172,8 @@ export class SwaggerParser {
                 const arr = this.pathesMap.get(type) || [];
                 arr.push('');
                 arr.push(`/**`);
-                if (authorized) arr.push(' * @Authorized');
-                commentSeperator(desc).forEach(line => arr.push(` * ${line}`));
+                if (authorized) { arr.push(' * @Authorized'); }
+                commentSeperator(desc).forEach(line => arr.push(line));
                 arr.push(` */`);
                 arr.push(`${name}: async (${arg}) => `);
                 arr.push(`  this.request<${responseType}>('${method}', '${path}', ${opts}${authorizedArg}),`);
@@ -177,7 +189,7 @@ export class SwaggerParser {
             interfacesBody.push('');
             if (desc) {
                 interfacesBody.push(`/**`);
-                commentSeperator(desc).forEach(line => interfacesBody.push(` * ${line}`));
+                commentSeperator(desc).forEach(line => interfacesBody.push(line));
                 interfacesBody.push(` */`);
             }
             interfacesBody.push(`export interface ${type} {`);
@@ -185,14 +197,13 @@ export class SwaggerParser {
             interfacesBody.push('}');
         }
 
-
         for (const [type, lines] of this.parametersMap.entries()) {
             interfacesBody.push('');
             interfacesBody.push(`export interface ${type} {`);
             lines.forEach(line => interfacesBody.push(line));
             interfacesBody.push('}');
         }
-        return interfacesBody.join('\n')
+        return interfacesBody.join('\n');
     }
 
     createClass() {
@@ -202,10 +213,8 @@ export class SwaggerParser {
             classBody.push('');
             classBody.push(`public ${type} = {`);
             lines.forEach(line => classBody.push(line));
-            classBody.push('}');
+            classBody.push('};');
         }
-        return classBody.join('\n')
+        return classBody.join('\n');
     }
 }
-
-

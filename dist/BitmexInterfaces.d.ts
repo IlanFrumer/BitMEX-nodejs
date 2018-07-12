@@ -655,35 +655,25 @@ export interface UserPreferences {
 }
 export interface AnnouncementQuery {
     /**
-     * Array of column names to fetch.
-     * If omitted, will return all columns.
+     * Array of column names to fetch. If omitted, will return all columns.
      */
     columns?: string;
 }
 export interface ApiKeyPost {
     /**
-     * Key name.
-     * This name is for reference only.
+     * Key name. This name is for reference only.
      */
     name?: string;
     /**
-     * CIDR block to restrict this key to.
-     * To restrict to a single address, append "/32", e.g. 207.39.29.22/32.
-     * Leave blank or set to 0.0.0.0/0 to allow all IPs.
-     * Only one block may be set.
-     * <a href="http://software77.net/cidr-101.html">More on CIDR blocks</a>
+     * CIDR block to restrict this key to. To restrict to a single address, append "/32", e.g. 207.39.29.22/32. Leave blank or set to 0.0.0.0/0 to allow all IPs. Only one block may be set. <a href="http://software77.net/cidr-101.html">More on CIDR blocks</a>
      */
     cidr?: string;
     /**
-     * Key Permissions.
-     * All keys can read margin and position data.
-     * Additional permissions must be added.
-     * Available: ["order", "orderCancel", "withdraw"].
+     * Key Permissions. All keys can read margin and position data. Additional permissions must be added. Available: ["order", "orderCancel", "withdraw"].
      */
     permissions?: string;
     /**
-     * Set to true to enable this key on creation.
-     * Otherwise, it must be explicitly enabled via /apiKey/enable.
+     * Set to true to enable this key on creation. Otherwise, it must be explicitly enabled via /apiKey/enable.
      */
     enabled?: boolean;
     /**
@@ -729,36 +719,31 @@ export interface ChatQuery {
      */
     reverse?: boolean;
     /**
-     * Channel id.
-     * GET /chat/channels for ids.
-     * Leave blank for all.
+     * Channel id. GET /chat/channels for ids. Leave blank for all.
      */
     channelID?: number;
 }
 export interface ChatPost {
     message: string;
     /**
-     * Channel to post to.
-     * Default 1 (English).
+     * Channel to post to. Default 1 (English).
      */
     channelID?: number;
 }
 export interface ExecutionQuery {
     /**
-     * Instrument symbol.
-     * Send a bare series (e.g. XBU) to get data for the nearest expiring contract in that series.
+     * Instrument symbol. Send a bare series (e.g. XBU) to get data for the nearest expiring contract in that series.
+     *
      * You can also send a timeframe, e.g. `XBU:monthly`. Timeframes are `daily`, `weekly`, `monthly`, `quarterly`, and `biquarterly`.
      */
     symbol?: string;
     /**
-     * Generic table filter.
-     * Send JSON key/value pairs, such as `{"key": "value"}`. You can key on individual fields, and do more advanced querying on timestamps.
-     * See the [Timestamp Docs](https://www.bitmex.com/app/restAPI#Timestamp-Filters) for more details.
+     * Generic table filter. Send JSON key/value pairs, such as `{"key": "value"}`. You can key on individual fields, and do more advanced querying on timestamps. See the [Timestamp Docs](https://www.bitmex.com/app/restAPI#Timestamp-Filters) for more details.
      */
     filter?: string;
     /**
-     * Array of column names to fetch.
-     * If omitted, will return all columns.
+     * Array of column names to fetch. If omitted, will return all columns.
+     *
      * Note that this method will always return item keys, even when not specified, so you may receive more columns that you expect.
      */
     columns?: string;
@@ -785,20 +770,18 @@ export interface ExecutionQuery {
 }
 export interface ExecutionTradeHistoryQuery {
     /**
-     * Instrument symbol.
-     * Send a bare series (e.g. XBU) to get data for the nearest expiring contract in that series.
+     * Instrument symbol. Send a bare series (e.g. XBU) to get data for the nearest expiring contract in that series.
+     *
      * You can also send a timeframe, e.g. `XBU:monthly`. Timeframes are `daily`, `weekly`, `monthly`, `quarterly`, and `biquarterly`.
      */
     symbol?: string;
     /**
-     * Generic table filter.
-     * Send JSON key/value pairs, such as `{"key": "value"}`. You can key on individual fields, and do more advanced querying on timestamps.
-     * See the [Timestamp Docs](https://www.bitmex.com/app/restAPI#Timestamp-Filters) for more details.
+     * Generic table filter. Send JSON key/value pairs, such as `{"key": "value"}`. You can key on individual fields, and do more advanced querying on timestamps. See the [Timestamp Docs](https://www.bitmex.com/app/restAPI#Timestamp-Filters) for more details.
      */
     filter?: string;
     /**
-     * Array of column names to fetch.
-     * If omitted, will return all columns.
+     * Array of column names to fetch. If omitted, will return all columns.
+     *
      * Note that this method will always return item keys, even when not specified, so you may receive more columns that you expect.
      */
     columns?: string;
@@ -825,20 +808,18 @@ export interface ExecutionTradeHistoryQuery {
 }
 export interface FundingQuery {
     /**
-     * Instrument symbol.
-     * Send a bare series (e.g. XBU) to get data for the nearest expiring contract in that series.
+     * Instrument symbol. Send a bare series (e.g. XBU) to get data for the nearest expiring contract in that series.
+     *
      * You can also send a timeframe, e.g. `XBU:monthly`. Timeframes are `daily`, `weekly`, `monthly`, `quarterly`, and `biquarterly`.
      */
     symbol?: string;
     /**
-     * Generic table filter.
-     * Send JSON key/value pairs, such as `{"key": "value"}`. You can key on individual fields, and do more advanced querying on timestamps.
-     * See the [Timestamp Docs](https://www.bitmex.com/app/restAPI#Timestamp-Filters) for more details.
+     * Generic table filter. Send JSON key/value pairs, such as `{"key": "value"}`. You can key on individual fields, and do more advanced querying on timestamps. See the [Timestamp Docs](https://www.bitmex.com/app/restAPI#Timestamp-Filters) for more details.
      */
     filter?: string;
     /**
-     * Array of column names to fetch.
-     * If omitted, will return all columns.
+     * Array of column names to fetch. If omitted, will return all columns.
+     *
      * Note that this method will always return item keys, even when not specified, so you may receive more columns that you expect.
      */
     columns?: string;
@@ -865,20 +846,18 @@ export interface FundingQuery {
 }
 export interface InstrumentQuery {
     /**
-     * Instrument symbol.
-     * Send a bare series (e.g. XBU) to get data for the nearest expiring contract in that series.
+     * Instrument symbol. Send a bare series (e.g. XBU) to get data for the nearest expiring contract in that series.
+     *
      * You can also send a timeframe, e.g. `XBU:monthly`. Timeframes are `daily`, `weekly`, `monthly`, `quarterly`, and `biquarterly`.
      */
     symbol?: string;
     /**
-     * Generic table filter.
-     * Send JSON key/value pairs, such as `{"key": "value"}`. You can key on individual fields, and do more advanced querying on timestamps.
-     * See the [Timestamp Docs](https://www.bitmex.com/app/restAPI#Timestamp-Filters) for more details.
+     * Generic table filter. Send JSON key/value pairs, such as `{"key": "value"}`. You can key on individual fields, and do more advanced querying on timestamps. See the [Timestamp Docs](https://www.bitmex.com/app/restAPI#Timestamp-Filters) for more details.
      */
     filter?: string;
     /**
-     * Array of column names to fetch.
-     * If omitted, will return all columns.
+     * Array of column names to fetch. If omitted, will return all columns.
+     *
      * Note that this method will always return item keys, even when not specified, so you may receive more columns that you expect.
      */
     columns?: string;
@@ -910,14 +889,12 @@ export interface InstrumentCompositeIndexQuery {
      */
     symbol?: string;
     /**
-     * Generic table filter.
-     * Send JSON key/value pairs, such as `{"key": "value"}`. You can key on individual fields, and do more advanced querying on timestamps.
-     * See the [Timestamp Docs](https://www.bitmex.com/app/restAPI#Timestamp-Filters) for more details.
+     * Generic table filter. Send JSON key/value pairs, such as `{"key": "value"}`. You can key on individual fields, and do more advanced querying on timestamps. See the [Timestamp Docs](https://www.bitmex.com/app/restAPI#Timestamp-Filters) for more details.
      */
     filter?: string;
     /**
-     * Array of column names to fetch.
-     * If omitted, will return all columns.
+     * Array of column names to fetch. If omitted, will return all columns.
+     *
      * Note that this method will always return item keys, even when not specified, so you may receive more columns that you expect.
      */
     columns?: string;
@@ -944,20 +921,18 @@ export interface InstrumentCompositeIndexQuery {
 }
 export interface InsuranceQuery {
     /**
-     * Instrument symbol.
-     * Send a bare series (e.g. XBU) to get data for the nearest expiring contract in that series.
+     * Instrument symbol. Send a bare series (e.g. XBU) to get data for the nearest expiring contract in that series.
+     *
      * You can also send a timeframe, e.g. `XBU:monthly`. Timeframes are `daily`, `weekly`, `monthly`, `quarterly`, and `biquarterly`.
      */
     symbol?: string;
     /**
-     * Generic table filter.
-     * Send JSON key/value pairs, such as `{"key": "value"}`. You can key on individual fields, and do more advanced querying on timestamps.
-     * See the [Timestamp Docs](https://www.bitmex.com/app/restAPI#Timestamp-Filters) for more details.
+     * Generic table filter. Send JSON key/value pairs, such as `{"key": "value"}`. You can key on individual fields, and do more advanced querying on timestamps. See the [Timestamp Docs](https://www.bitmex.com/app/restAPI#Timestamp-Filters) for more details.
      */
     filter?: string;
     /**
-     * Array of column names to fetch.
-     * If omitted, will return all columns.
+     * Array of column names to fetch. If omitted, will return all columns.
+     *
      * Note that this method will always return item keys, even when not specified, so you may receive more columns that you expect.
      */
     columns?: string;
@@ -984,27 +959,24 @@ export interface InsuranceQuery {
 }
 export interface LeaderboardQuery {
     /**
-     * Ranking type.
-     * Options: "notional", "ROE"
+     * Ranking type. Options: "notional", "ROE"
      */
     method?: 'notional' | 'ROE';
 }
 export interface LiquidationQuery {
     /**
-     * Instrument symbol.
-     * Send a bare series (e.g. XBU) to get data for the nearest expiring contract in that series.
+     * Instrument symbol. Send a bare series (e.g. XBU) to get data for the nearest expiring contract in that series.
+     *
      * You can also send a timeframe, e.g. `XBU:monthly`. Timeframes are `daily`, `weekly`, `monthly`, `quarterly`, and `biquarterly`.
      */
     symbol?: string;
     /**
-     * Generic table filter.
-     * Send JSON key/value pairs, such as `{"key": "value"}`. You can key on individual fields, and do more advanced querying on timestamps.
-     * See the [Timestamp Docs](https://www.bitmex.com/app/restAPI#Timestamp-Filters) for more details.
+     * Generic table filter. Send JSON key/value pairs, such as `{"key": "value"}`. You can key on individual fields, and do more advanced querying on timestamps. See the [Timestamp Docs](https://www.bitmex.com/app/restAPI#Timestamp-Filters) for more details.
      */
     filter?: string;
     /**
-     * Array of column names to fetch.
-     * If omitted, will return all columns.
+     * Array of column names to fetch. If omitted, will return all columns.
+     *
      * Note that this method will always return item keys, even when not specified, so you may receive more columns that you expect.
      */
     columns?: string;
@@ -1031,20 +1003,18 @@ export interface LiquidationQuery {
 }
 export interface OrderQuery {
     /**
-     * Instrument symbol.
-     * Send a bare series (e.g. XBU) to get data for the nearest expiring contract in that series.
+     * Instrument symbol. Send a bare series (e.g. XBU) to get data for the nearest expiring contract in that series.
+     *
      * You can also send a timeframe, e.g. `XBU:monthly`. Timeframes are `daily`, `weekly`, `monthly`, `quarterly`, and `biquarterly`.
      */
     symbol?: string;
     /**
-     * Generic table filter.
-     * Send JSON key/value pairs, such as `{"key": "value"}`. You can key on individual fields, and do more advanced querying on timestamps.
-     * See the [Timestamp Docs](https://www.bitmex.com/app/restAPI#Timestamp-Filters) for more details.
+     * Generic table filter. Send JSON key/value pairs, such as `{"key": "value"}`. You can key on individual fields, and do more advanced querying on timestamps. See the [Timestamp Docs](https://www.bitmex.com/app/restAPI#Timestamp-Filters) for more details.
      */
     filter?: string;
     /**
-     * Array of column names to fetch.
-     * If omitted, will return all columns.
+     * Array of column names to fetch. If omitted, will return all columns.
+     *
      * Note that this method will always return item keys, even when not specified, so you may receive more columns that you expect.
      */
     columns?: string;
@@ -1071,14 +1041,11 @@ export interface OrderQuery {
 }
 export interface OrderPost {
     /**
-     * Instrument symbol.
-     * e.g. 'XBTUSD'.
+     * Instrument symbol. e.g. 'XBTUSD'.
      */
     symbol: string;
     /**
-     * Order side.
-     * Valid options: Buy, Sell.
-     * Defaults to 'Buy' unless `orderQty` or `simpleOrderQty` is negative.
+     * Order side. Valid options: Buy, Sell. Defaults to 'Buy' unless `orderQty` or `simpleOrderQty` is negative.
      */
     side?: 'Buy' | 'Sell';
     /**
@@ -1094,19 +1061,15 @@ export interface OrderPost {
      */
     price?: number;
     /**
-     * Optional quantity to display in the book.
-     * Use 0 for a fully hidden order.
+     * Optional quantity to display in the book. Use 0 for a fully hidden order.
      */
     displayQty?: number;
     /**
-     * Optional trigger price for 'Stop', 'StopLimit', 'MarketIfTouched', and 'LimitIfTouched' orders.
-     * Use a price below the current price for stop-sell orders and buy-if-touched orders.
-     * Use `execInst` of 'MarkPrice' or 'LastPrice' to define the current price used for triggering.
+     * Optional trigger price for 'Stop', 'StopLimit', 'MarketIfTouched', and 'LimitIfTouched' orders. Use a price below the current price for stop-sell orders and buy-if-touched orders. Use `execInst` of 'MarkPrice' or 'LastPrice' to define the current price used for triggering.
      */
     stopPx?: number;
     /**
-     * Optional Client Order ID.
-     * This clOrdID will come back on the order and any related executions.
+     * Optional Client Order ID. This clOrdID will come back on the order and any related executions.
      */
     clOrdID?: string;
     /**
@@ -1114,33 +1077,23 @@ export interface OrderPost {
      */
     clOrdLinkID?: string;
     /**
-     * Optional trailing offset from the current price for 'Stop', 'StopLimit', 'MarketIfTouched', and 'LimitIfTouched' orders; use a negative offset for stop-sell orders and buy-if-touched orders.
-     * Optional offset from the peg price for 'Pegged' orders.
+     * Optional trailing offset from the current price for 'Stop', 'StopLimit', 'MarketIfTouched', and 'LimitIfTouched' orders; use a negative offset for stop-sell orders and buy-if-touched orders. Optional offset from the peg price for 'Pegged' orders.
      */
     pegOffsetValue?: number;
     /**
-     * Optional peg price type.
-     * Valid options: LastPeg, MidPricePeg, MarketPeg, PrimaryPeg, TrailingStopPeg.
+     * Optional peg price type. Valid options: LastPeg, MidPricePeg, MarketPeg, PrimaryPeg, TrailingStopPeg.
      */
     pegPriceType?: 'LastPeg' | 'MidPricePeg' | 'MarketPeg' | 'PrimaryPeg' | 'TrailingStopPeg';
     /**
-     * Order type.
-     * Valid options: Market, Limit, Stop, StopLimit, MarketIfTouched, LimitIfTouched, MarketWithLeftOverAsLimit, Pegged.
-     * Defaults to 'Limit' when `price` is specified.
-     * Defaults to 'Stop' when `stopPx` is specified.
-     * Defaults to 'StopLimit' when `price` and `stopPx` are specified.
+     * Order type. Valid options: Market, Limit, Stop, StopLimit, MarketIfTouched, LimitIfTouched, MarketWithLeftOverAsLimit, Pegged. Defaults to 'Limit' when `price` is specified. Defaults to 'Stop' when `stopPx` is specified. Defaults to 'StopLimit' when `price` and `stopPx` are specified.
      */
     ordType?: 'Market' | 'Limit' | 'Stop' | 'StopLimit' | 'MarketIfTouched' | 'LimitIfTouched' | 'MarketWithLeftOverAsLimit' | 'Pegged';
     /**
-     * Time in force.
-     * Valid options: Day, GoodTillCancel, ImmediateOrCancel, FillOrKill.
-     * Defaults to 'GoodTillCancel' for 'Limit', 'StopLimit', 'LimitIfTouched', and 'MarketWithLeftOverAsLimit' orders.
+     * Time in force. Valid options: Day, GoodTillCancel, ImmediateOrCancel, FillOrKill. Defaults to 'GoodTillCancel' for 'Limit', 'StopLimit', 'LimitIfTouched', and 'MarketWithLeftOverAsLimit' orders.
      */
     timeInForce?: 'Day' | 'GoodTillCancel' | 'ImmediateOrCancel' | 'FillOrKill';
     /**
-     * Optional execution instructions.
-     * Valid options: ParticipateDoNotInitiate, AllOrNone, MarkPrice, IndexPrice, LastPrice, Close, ReduceOnly, Fixed.
-     * 'AllOrNone' instruction requires `displayQty` to be 0. 'MarkPrice', 'IndexPrice' or 'LastPrice' instruction valid for 'Stop', 'StopLimit', 'MarketIfTouched', and 'LimitIfTouched' orders.
+     * Optional execution instructions. Valid options: ParticipateDoNotInitiate, AllOrNone, MarkPrice, IndexPrice, LastPrice, Close, ReduceOnly, Fixed. 'AllOrNone' instruction requires `displayQty` to be 0. 'MarkPrice', 'IndexPrice' or 'LastPrice' instruction valid for 'Stop', 'StopLimit', 'MarketIfTouched', and 'LimitIfTouched' orders.
      */
     execInst?: 'ParticipateDoNotInitiate' | 'AllOrNone' | 'MarkPrice' | 'IndexPrice' | 'LastPrice' | 'Close' | 'ReduceOnly' | 'Fixed';
     /**
@@ -1148,8 +1101,7 @@ export interface OrderPost {
      */
     contingencyType?: 'OneCancelsTheOther' | 'OneTriggersTheOther' | 'OneUpdatesTheOtherAbsolute' | 'OneUpdatesTheOtherProportional';
     /**
-     * Optional order annotation.
-     * e.g. 'Take profit'.
+     * Optional order annotation. e.g. 'Take profit'.
      */
     text?: string;
 }
@@ -1159,8 +1111,7 @@ export interface OrderPut {
      */
     orderID?: string;
     /**
-     * Client Order ID.
-     * See POST /order.
+     * Client Order ID. See POST /order.
      */
     origClOrdID?: string;
     /**
@@ -1188,18 +1139,15 @@ export interface OrderPut {
      */
     price?: number;
     /**
-     * Optional trigger price for 'Stop', 'StopLimit', 'MarketIfTouched', and 'LimitIfTouched' orders.
-     * Use a price below the current price for stop-sell orders and buy-if-touched orders.
+     * Optional trigger price for 'Stop', 'StopLimit', 'MarketIfTouched', and 'LimitIfTouched' orders. Use a price below the current price for stop-sell orders and buy-if-touched orders.
      */
     stopPx?: number;
     /**
-     * Optional trailing offset from the current price for 'Stop', 'StopLimit', 'MarketIfTouched', and 'LimitIfTouched' orders; use a negative offset for stop-sell orders and buy-if-touched orders.
-     * Optional offset from the peg price for 'Pegged' orders.
+     * Optional trailing offset from the current price for 'Stop', 'StopLimit', 'MarketIfTouched', and 'LimitIfTouched' orders; use a negative offset for stop-sell orders and buy-if-touched orders. Optional offset from the peg price for 'Pegged' orders.
      */
     pegOffsetValue?: number;
     /**
-     * Optional amend annotation.
-     * e.g. 'Adjust skew'.
+     * Optional amend annotation. e.g. 'Adjust skew'.
      */
     text?: string;
 }
@@ -1213,8 +1161,7 @@ export interface OrderDelete {
      */
     clOrdID?: string;
     /**
-     * Optional cancellation annotation.
-     * e.g. 'Spread Exceeded'.
+     * Optional cancellation annotation. e.g. 'Spread Exceeded'.
      */
     text?: string;
 }
@@ -1242,50 +1189,41 @@ export interface OrderClosePositionPost {
 }
 export interface OrderAllDelete {
     /**
-     * Optional symbol.
-     * If provided, only cancels orders for that symbol.
+     * Optional symbol. If provided, only cancels orders for that symbol.
      */
     symbol?: string;
     /**
-     * Optional filter for cancellation.
-     * Use to only cancel some orders, e.g. `{"side": "Buy"}`.
+     * Optional filter for cancellation. Use to only cancel some orders, e.g. `{"side": "Buy"}`.
      */
     filter?: string;
     /**
-     * Optional cancellation annotation.
-     * e.g. 'Spread Exceeded'
+     * Optional cancellation annotation. e.g. 'Spread Exceeded'
      */
     text?: string;
 }
 export interface OrderCancelAllAfterPost {
     /**
-     * Timeout in ms.
-     * Set to 0 to cancel this timer.
-     *
+     * Timeout in ms. Set to 0 to cancel this timer.
      */
     timeout: number;
 }
 export interface OrderBookL2Query {
     /**
-     * Instrument symbol.
-     * Send a series (e.g. XBT) to get data for the nearest contract in that series.
+     * Instrument symbol. Send a series (e.g. XBT) to get data for the nearest contract in that series.
      */
     symbol: string;
     /**
-     * Orderbook depth per side.
-     * Send 0 for full depth.
+     * Orderbook depth per side. Send 0 for full depth.
      */
     depth?: number;
 }
 export interface PositionQuery {
     /**
-     * Table filter.
-     * For example, send {"symbol": "XBTUSD"}.
+     * Table filter. For example, send {"symbol": "XBTUSD"}.
      */
     filter?: string;
     /**
-     * Which columns to fetch.
-     * For example, send ["columnName"].
+     * Which columns to fetch. For example, send ["columnName"].
      */
     columns?: string;
     /**
@@ -1319,8 +1257,7 @@ export interface PositionTransferMarginPost {
      */
     symbol: string;
     /**
-     * Amount to transfer, in Satoshis.
-     * May be negative.
+     * Amount to transfer, in Satoshis. May be negative.
      */
     amount: number;
 }
@@ -1330,28 +1267,24 @@ export interface PositionLeveragePost {
      */
     symbol: string;
     /**
-     * Leverage value.
-     * Send a number between 0.01 and 100 to enable isolated margin with a fixed leverage.
-     * Send 0 to enable cross margin.
+     * Leverage value. Send a number between 0.01 and 100 to enable isolated margin with a fixed leverage. Send 0 to enable cross margin.
      */
     leverage: number;
 }
 export interface QuoteQuery {
     /**
-     * Instrument symbol.
-     * Send a bare series (e.g. XBU) to get data for the nearest expiring contract in that series.
+     * Instrument symbol. Send a bare series (e.g. XBU) to get data for the nearest expiring contract in that series.
+     *
      * You can also send a timeframe, e.g. `XBU:monthly`. Timeframes are `daily`, `weekly`, `monthly`, `quarterly`, and `biquarterly`.
      */
     symbol?: string;
     /**
-     * Generic table filter.
-     * Send JSON key/value pairs, such as `{"key": "value"}`. You can key on individual fields, and do more advanced querying on timestamps.
-     * See the [Timestamp Docs](https://www.bitmex.com/app/restAPI#Timestamp-Filters) for more details.
+     * Generic table filter. Send JSON key/value pairs, such as `{"key": "value"}`. You can key on individual fields, and do more advanced querying on timestamps. See the [Timestamp Docs](https://www.bitmex.com/app/restAPI#Timestamp-Filters) for more details.
      */
     filter?: string;
     /**
-     * Array of column names to fetch.
-     * If omitted, will return all columns.
+     * Array of column names to fetch. If omitted, will return all columns.
+     *
      * Note that this method will always return item keys, even when not specified, so you may receive more columns that you expect.
      */
     columns?: string;
@@ -1378,8 +1311,7 @@ export interface QuoteQuery {
 }
 export interface QuoteBucketedQuery {
     /**
-     * Time interval to bucket by.
-     * Available options: [1m,5m,1h,1d].
+     * Time interval to bucket by. Available options: [1m,5m,1h,1d].
      */
     binSize?: '1m' | '5m' | '1h' | '1d';
     /**
@@ -1387,20 +1319,18 @@ export interface QuoteBucketedQuery {
      */
     partial?: boolean;
     /**
-     * Instrument symbol.
-     * Send a bare series (e.g. XBU) to get data for the nearest expiring contract in that series.
+     * Instrument symbol. Send a bare series (e.g. XBU) to get data for the nearest expiring contract in that series.
+     *
      * You can also send a timeframe, e.g. `XBU:monthly`. Timeframes are `daily`, `weekly`, `monthly`, `quarterly`, and `biquarterly`.
      */
     symbol?: string;
     /**
-     * Generic table filter.
-     * Send JSON key/value pairs, such as `{"key": "value"}`. You can key on individual fields, and do more advanced querying on timestamps.
-     * See the [Timestamp Docs](https://www.bitmex.com/app/restAPI#Timestamp-Filters) for more details.
+     * Generic table filter. Send JSON key/value pairs, such as `{"key": "value"}`. You can key on individual fields, and do more advanced querying on timestamps. See the [Timestamp Docs](https://www.bitmex.com/app/restAPI#Timestamp-Filters) for more details.
      */
     filter?: string;
     /**
-     * Array of column names to fetch.
-     * If omitted, will return all columns.
+     * Array of column names to fetch. If omitted, will return all columns.
+     *
      * Note that this method will always return item keys, even when not specified, so you may receive more columns that you expect.
      */
     columns?: string;
@@ -1427,27 +1357,24 @@ export interface QuoteBucketedQuery {
 }
 export interface SchemaQuery {
     /**
-     * Optional model filter.
-     * If omitted, will return all models.
+     * Optional model filter. If omitted, will return all models.
      */
     model?: string;
 }
 export interface SettlementQuery {
     /**
-     * Instrument symbol.
-     * Send a bare series (e.g. XBU) to get data for the nearest expiring contract in that series.
+     * Instrument symbol. Send a bare series (e.g. XBU) to get data for the nearest expiring contract in that series.
+     *
      * You can also send a timeframe, e.g. `XBU:monthly`. Timeframes are `daily`, `weekly`, `monthly`, `quarterly`, and `biquarterly`.
      */
     symbol?: string;
     /**
-     * Generic table filter.
-     * Send JSON key/value pairs, such as `{"key": "value"}`. You can key on individual fields, and do more advanced querying on timestamps.
-     * See the [Timestamp Docs](https://www.bitmex.com/app/restAPI#Timestamp-Filters) for more details.
+     * Generic table filter. Send JSON key/value pairs, such as `{"key": "value"}`. You can key on individual fields, and do more advanced querying on timestamps. See the [Timestamp Docs](https://www.bitmex.com/app/restAPI#Timestamp-Filters) for more details.
      */
     filter?: string;
     /**
-     * Array of column names to fetch.
-     * If omitted, will return all columns.
+     * Array of column names to fetch. If omitted, will return all columns.
+     *
      * Note that this method will always return item keys, even when not specified, so you may receive more columns that you expect.
      */
     columns?: string;
@@ -1474,20 +1401,18 @@ export interface SettlementQuery {
 }
 export interface TradeQuery {
     /**
-     * Instrument symbol.
-     * Send a bare series (e.g. XBU) to get data for the nearest expiring contract in that series.
+     * Instrument symbol. Send a bare series (e.g. XBU) to get data for the nearest expiring contract in that series.
+     *
      * You can also send a timeframe, e.g. `XBU:monthly`. Timeframes are `daily`, `weekly`, `monthly`, `quarterly`, and `biquarterly`.
      */
     symbol?: string;
     /**
-     * Generic table filter.
-     * Send JSON key/value pairs, such as `{"key": "value"}`. You can key on individual fields, and do more advanced querying on timestamps.
-     * See the [Timestamp Docs](https://www.bitmex.com/app/restAPI#Timestamp-Filters) for more details.
+     * Generic table filter. Send JSON key/value pairs, such as `{"key": "value"}`. You can key on individual fields, and do more advanced querying on timestamps. See the [Timestamp Docs](https://www.bitmex.com/app/restAPI#Timestamp-Filters) for more details.
      */
     filter?: string;
     /**
-     * Array of column names to fetch.
-     * If omitted, will return all columns.
+     * Array of column names to fetch. If omitted, will return all columns.
+     *
      * Note that this method will always return item keys, even when not specified, so you may receive more columns that you expect.
      */
     columns?: string;
@@ -1514,8 +1439,7 @@ export interface TradeQuery {
 }
 export interface TradeBucketedQuery {
     /**
-     * Time interval to bucket by.
-     * Available options: [1m,5m,1h,1d].
+     * Time interval to bucket by. Available options: [1m,5m,1h,1d].
      */
     binSize?: '1m' | '5m' | '1h' | '1d';
     /**
@@ -1523,20 +1447,18 @@ export interface TradeBucketedQuery {
      */
     partial?: boolean;
     /**
-     * Instrument symbol.
-     * Send a bare series (e.g. XBU) to get data for the nearest expiring contract in that series.
+     * Instrument symbol. Send a bare series (e.g. XBU) to get data for the nearest expiring contract in that series.
+     *
      * You can also send a timeframe, e.g. `XBU:monthly`. Timeframes are `daily`, `weekly`, `monthly`, `quarterly`, and `biquarterly`.
      */
     symbol?: string;
     /**
-     * Generic table filter.
-     * Send JSON key/value pairs, such as `{"key": "value"}`. You can key on individual fields, and do more advanced querying on timestamps.
-     * See the [Timestamp Docs](https://www.bitmex.com/app/restAPI#Timestamp-Filters) for more details.
+     * Generic table filter. Send JSON key/value pairs, such as `{"key": "value"}`. You can key on individual fields, and do more advanced querying on timestamps. See the [Timestamp Docs](https://www.bitmex.com/app/restAPI#Timestamp-Filters) for more details.
      */
     filter?: string;
     /**
-     * Array of column names to fetch.
-     * If omitted, will return all columns.
+     * Array of column names to fetch. If omitted, will return all columns.
+     *
      * Note that this method will always return item keys, even when not specified, so you may receive more columns that you expect.
      */
     columns?: string;
@@ -1578,13 +1500,11 @@ export interface UserMinWithdrawalFeeQuery {
 }
 export interface UserRequestWithdrawalPost {
     /**
-     * 2FA token.
-     * Required if 2FA is enabled on your account.
+     * 2FA token. Required if 2FA is enabled on your account.
      */
     otpToken?: string;
     /**
-     * Currency you're withdrawing.
-     * Options: `XBt`
+     * Currency you're withdrawing. Options: `XBt`
      */
     currency?: 'XBt';
     /**
@@ -1596,9 +1516,7 @@ export interface UserRequestWithdrawalPost {
      */
     address: string;
     /**
-     * Network fee for Bitcoin withdrawals.
-     * If not specified, a default value will be calculated based on Bitcoin network conditions.
-     * You will have a chance to confirm this via email.
+     * Network fee for Bitcoin withdrawals. If not specified, a default value will be calculated based on Bitcoin network conditions. You will have a chance to confirm this via email.
      */
     fee?: number;
 }
@@ -1610,15 +1528,13 @@ export interface UserConfirmWithdrawalPost {
 }
 export interface UserRequestEnableTFAPost {
     /**
-     * Two-factor auth type.
-     * Supported types: 'GA' (Google Authenticator)
+     * Two-factor auth type. Supported types: 'GA' (Google Authenticator)
      */
     type?: string;
 }
 export interface UserConfirmEnableTFAPost {
     /**
-     * Two-factor auth type.
-     * Supported types: 'GA' (Google Authenticator), 'Yubikey'
+     * Two-factor auth type. Supported types: 'GA' (Google Authenticator), 'Yubikey'
      */
     type?: string;
     /**
@@ -1628,8 +1544,7 @@ export interface UserConfirmEnableTFAPost {
 }
 export interface UserDisableTFAPost {
     /**
-     * Two-factor auth type.
-     * Supported types: 'GA' (Google Authenticator)
+     * Two-factor auth type. Supported types: 'GA' (Google Authenticator)
      */
     type?: string;
     /**
@@ -1657,8 +1572,7 @@ export interface UserPut {
     newPassword?: string;
     newPasswordConfirm?: string;
     /**
-     * Username can only be set once.
-     * To reset, email support.
+     * Username can only be set once. To reset, email support.
      */
     username?: string;
     /**
@@ -1666,8 +1580,7 @@ export interface UserPut {
      */
     country?: string;
     /**
-     * PGP Public Key.
-     * If specified, automated emails will be sentwith this key.
+     * PGP Public Key. If specified, automated emails will be sentwith this key.
      */
     pgpPubKey?: string;
 }

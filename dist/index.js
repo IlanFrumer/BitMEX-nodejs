@@ -1,4 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const tslib_1 = require("tslib");
+const BITMEX = tslib_1.__importStar(require("./BitmexInterfaces"));
+exports.BITMEX = BITMEX;
 var BitmexAPI_1 = require("./BitmexAPI");
 exports.BitmexAPI = BitmexAPI_1.BitmexAPI;

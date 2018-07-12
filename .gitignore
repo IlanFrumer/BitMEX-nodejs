@@ -1,2 +1,6 @@
 node_modules/
 config.json
+src/test.ts
+dist/test.d.ts
+dist/test.ts
+dist/test.js

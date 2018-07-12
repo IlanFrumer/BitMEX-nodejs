@@ -8,7 +8,7 @@ export declare abstract class BitmexAbstractAPI {
     private getRateLimitDelay;
     protected request<T>(method: APIMethods, endpoint: string, opts: {
         qs?: any;
-        formData?: any;
+        form?: any;
     }, auth?: boolean): Promise<T>;
 }
 export {};

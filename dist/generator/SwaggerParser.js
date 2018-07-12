@@ -4,9 +4,9 @@ exports.CONTAINER = 'BITMEX';
 const toEntries = (obj) => Object.keys(obj).map(key => [key, obj[key]]);
 const titleCase = (w) => w.charAt(0).toUpperCase() + w.substr(1).toLowerCase();
 const eTitleCase = (text) => text.replace(/\/(\w)/g, (a, w) => titleCase(w));
-const commentSeperator = (text) => (text || '').replace(/(\w{2}\.)\s+/g, '$1\n').split('\n');
 const normalizeDefinition = (text) => text.replace('#/definitions/', '').replace('x-any', 'any');
 const enumMapper = (d) => `'${d.trim()}'`;
+const commentSeperator = (text) => (text || '').split('\n').map(line => line.trim()).map(line => line ? ' * ' + line : ' *');
 const descriptionEnumRegexps = [
     /Available options: \[(.+?)\]/,
     /Valid options: (.+?)\./,
@@ -43,15 +43,18 @@ class SwaggerParser {
                 }
                 let row = `${prop}: ${arg};`;
                 const comments = [];
-                if (def.format)
+                if (def.format) {
                     comments.push(`format: ${def.format}`);
-                if (def.maxLength)
+                }
+                if (def.maxLength) {
                     comments.push(`maxLength: ${def.maxLength}`);
+                }
                 if (def.default) {
                     comments.push(`default: ${typeof def.default === 'object' ? JSON.stringify(def.default) : def.default}`);
                 }
-                if (comments.length)
+                if (comments.length) {
                     row += ' // ' + comments.join(', ');
+                }
                 const arr = this.definitionsMap.get(name) || [];
                 arr.push(row);
                 this.definitionsMap.set(name, arr);
@@ -59,8 +62,9 @@ class SwaggerParser {
         }
         for (const [path, methods] of toEntries(data.paths)) {
             for (let [method, def] of toEntries(methods)) {
-                if (def.deprecated)
+                if (def.deprecated) {
                     continue;
+                }
                 // TODO: use def.Tags
                 const authorized = typeof def.security === 'undefined';
                 const [type, name] = def.operationId.split('.');
@@ -72,9 +76,10 @@ class SwaggerParser {
                 const arr = this.pathesMap.get(type) || [];
                 arr.push('');
                 arr.push(`/**`);
-                if (authorized)
+                if (authorized) {
                     arr.push(' * @Authorized');
-                commentSeperator(desc).forEach(line => arr.push(` * ${line}`));
+                }
+                commentSeperator(desc).forEach(line => arr.push(line));
                 arr.push(` */`);
                 arr.push(`${name}: async (${arg}) => `);
                 arr.push(`  this.request<${responseType}>('${method}', '${path}', ${opts}${authorizedArg}),`);
@@ -85,8 +90,9 @@ class SwaggerParser {
     getResponseType(responses) {
         let responseType = 'any';
         for (const [status, res] of toEntries(responses)) {
-            if (status !== '200')
+            if (status !== '200') {
                 continue;
+            }
             switch (res.schema.type) {
                 case 'array':
                     responseType = exports.CONTAINER + '.' + normalizeDefinition(res.schema.items.$ref) + '[]';
@@ -121,7 +127,7 @@ class SwaggerParser {
             let key;
             if (p.in === 'formData') {
                 key = `${title}${titleCase(method)}`;
-                opts = 'formData';
+                opts = 'form';
                 arg = `${exports.CONTAINER}.${key}`;
             }
             else if (p.in === 'query') {
@@ -149,7 +155,7 @@ class SwaggerParser {
             pArray.push('');
             if (p.description) {
                 pArray.push(`/**`);
-                commentSeperator(p.description).forEach(line => pArray.push(` * ${line}`));
+                commentSeperator(p.description).forEach(line => pArray.push(line));
                 pArray.push(` */`);
             }
             pArray.push(`${p.name}${required ? '' : '?'}: ${type};${comment}`);
@@ -166,7 +172,7 @@ class SwaggerParser {
             interfacesBody.push('');
             if (desc) {
                 interfacesBody.push(`/**`);
-                commentSeperator(desc).forEach(line => interfacesBody.push(` * ${line}`));
+                commentSeperator(desc).forEach(line => interfacesBody.push(line));
                 interfacesBody.push(` */`);
             }
             interfacesBody.push(`export interface ${type} {`);
@@ -188,7 +194,7 @@ class SwaggerParser {
             classBody.push('');
             classBody.push(`public ${type} = {`);
             lines.forEach(line => classBody.push(line));
-            classBody.push('}');
+            classBody.push('};');
         }
         return classBody.join('\n');
     }

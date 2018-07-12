@@ -15,6 +15,12 @@ class BitmexAbstractAPI {
     }
     request(method, endpoint, opts, auth = false) {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
+            if (opts.qs && Object.keys(opts.qs).length === 0) {
+                delete opts.qs;
+            }
+            if (opts.form && Object.keys(opts.form).length === 0) {
+                delete opts.form;
+            }
             const url = `${this.basePath}${endpoint}`;
             const path = url_1.parse(url).pathname || '';
             const headers = auth && this.credentials ? BitmexAuth_1.getAuthHeaders(this.credentials, method, path, opts) : {};
@@ -24,15 +30,17 @@ class BitmexAbstractAPI {
             return new Promise((resolve, reject) => {
                 setTimeout(() => {
                     request_1.default(options, (error, response, body) => {
-                        if (error)
+                        if (error) {
                             return reject(error);
+                        }
                         this.ratelimit = {
-                            limit: parseInt(response.headers['x-ratelimit-limit']),
-                            remaining: parseInt(response.headers['x-ratelimit-remaining']),
-                            reset: parseInt(response.headers['x-ratelimit-reset']) * 1000
+                            limit: parseInt(response.headers['x-ratelimit-limit'], 10),
+                            remaining: parseInt(response.headers['x-ratelimit-remaining'], 10),
+                            reset: parseInt(response.headers['x-ratelimit-reset'], 10) * 1000
                         };
-                        if (body.error)
+                        if (body.error) {
                             return reject(body.error);
+                        }
                         resolve(body);
                     });
                 }, this.getRateLimitDelay());

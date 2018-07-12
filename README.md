@@ -28,4 +28,3 @@ bitmex.User.get()
 - Promises
 - Rate limit
 - more ...
-

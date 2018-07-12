@@ -1,7 +1,7 @@
 import { BitmexCredentials } from './BitmexCredentials';
-export declare function getAuthHeaders(credentials: BitmexCredentials, verb: string, path: string, data: {
+export declare function getAuthHeaders(credentials: BitmexCredentials, verb: string, path: string, opts: {
     qs?: any;
-    formData?: any;
+    form?: any;
 }): {
     'api-expires': number;
     'api-key': string;
