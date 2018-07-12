@@ -1,4 +1,4 @@
-## BitMEX-nodejs - unofficial BitMEX API connector written with typescript
+### BitMEX-nodejs - An unofficial BitMEX API connector written with typescript
 
 *All types and methods are automatically generated from BitMEX official Swagger Specification*
 
@@ -37,3 +37,6 @@ const bitmex = new BitmexAPI({
 - [Authentication](https://www.bitmex.com/app/apiKeysUsage)
 - [Native promises](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)
 - [Rate limiting](https://www.bitmex.com/app/restAPI#Request-Rate-Limits)
+
+###### Donate
+ - (BTC) 1CUjz7EF1iqgJPi3MPW6Nb556tQwPNryM3</span>
