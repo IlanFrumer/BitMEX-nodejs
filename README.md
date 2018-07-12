@@ -39,4 +39,4 @@ const bitmex = new BitmexAPI({
 - [Rate limiting](https://www.bitmex.com/app/restAPI#Request-Rate-Limits)
 
 ###### Donate
- - (BTC) 1CUjz7EF1iqgJPi3MPW6Nb556tQwPNryM3</span>
+ - (BTC) 1CUjz7EF1iqgJPi3MPW6Nb556tQwPNryM3
