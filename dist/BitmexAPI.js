@@ -7,7 +7,7 @@ const BitmexAbstractAPI_1 = require("./BitmexAbstractAPI");
 class BitmexAPI extends BitmexAbstractAPI_1.BitmexAbstractAPI {
     constructor() {
         super(...arguments);
-        this.basePath = 'https://www.bitmex.com/api/v1';
+        this.basePath = '/api/v1';
         this.Announcement = {
             /**
              * Get site announcements.

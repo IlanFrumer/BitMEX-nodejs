@@ -4,7 +4,7 @@
 import { BitmexAbstractAPI } from './BitmexAbstractAPI';
 import * as BITMEX from './BitmexInterfaces';
 export class BitmexAPI extends BitmexAbstractAPI {
-    readonly basePath = 'https://www.bitmex.com/api/v1';
+    readonly basePath = '/api/v1';
 
     public Announcement = {
 

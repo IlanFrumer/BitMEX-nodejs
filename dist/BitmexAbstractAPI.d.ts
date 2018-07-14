@@ -1,11 +1,13 @@
-import { BitmexCredentials } from './BitmexCredentials';
+import { BitmexAPIOptions } from './BitmexAPIOptions';
 declare type APIMethods = 'GET' | 'POST' | 'DELETE' | 'PUT';
 export declare abstract class BitmexAbstractAPI {
-    private credentials?;
     abstract readonly basePath: string;
+    readonly host: string;
+    readonly apiKeySecret: string | null;
+    readonly apiKeyID: string | null;
     private ratelimit;
-    constructor(credentials?: BitmexCredentials | undefined);
-    private getRateLimitDelay;
+    constructor(options?: BitmexAPIOptions);
+    private getRateLimitTimeout;
     protected request<T>(method: APIMethods, endpoint: string, opts: {
         qs?: any;
         form?: any;

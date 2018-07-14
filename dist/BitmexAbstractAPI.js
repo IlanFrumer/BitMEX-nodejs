@@ -5,11 +5,13 @@ const BitmexAuth_1 = require("./BitmexAuth");
 const url_1 = require("url");
 const request_1 = tslib_1.__importDefault(require("request"));
 class BitmexAbstractAPI {
-    constructor(credentials) {
-        this.credentials = credentials;
+    constructor(options) {
         this.ratelimit = null;
+        this.host = options && !!options.testnet ? 'https://testnet.bitmex.com' : 'https://www.bitmex.com';
+        this.apiKeyID = options && options.apiKeyID || null;
+        this.apiKeySecret = options && options.apiKeySecret || null;
     }
-    getRateLimitDelay() {
+    getRateLimitTimeout() {
         const rate = this.ratelimit;
         return rate != null && rate.remaining <= 0 ? Math.max(rate.reset - new Date().valueOf(), 0) : 0;
     }
@@ -21,12 +23,19 @@ class BitmexAbstractAPI {
             if (opts.form && Object.keys(opts.form).length === 0) {
                 delete opts.form;
             }
-            const url = `${this.basePath}${endpoint}`;
+            const url = `${this.host}${this.basePath}${endpoint}`;
             const path = url_1.parse(url).pathname || '';
-            const headers = auth && this.credentials ? BitmexAuth_1.getAuthHeaders(this.credentials, method, path, opts) : {};
+            const headers = auth ? BitmexAuth_1.getAuthHeaders({
+                apiKeyID: this.apiKeyID,
+                apiKeySecret: this.apiKeySecret,
+                method,
+                path,
+                opts
+            }) : {};
             const options = Object.assign({ method,
                 url,
                 headers, json: true }, opts);
+            const timeout = this.getRateLimitTimeout();
             return new Promise((resolve, reject) => {
                 setTimeout(() => {
                     request_1.default(options, (error, response, body) => {
@@ -43,7 +52,7 @@ class BitmexAbstractAPI {
                         }
                         resolve(body);
                     });
-                }, this.getRateLimitDelay());
+                }, timeout);
             });
         });
     }

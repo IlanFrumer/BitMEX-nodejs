@@ -1,5 +1,5 @@
 import { getAuthHeaders } from './BitmexAuth';
-import { BitmexCredentials } from './BitmexCredentials';
+import { BitmexAPIOptions } from './BitmexAPIOptions';
 
 import { parse as urlParse } from 'url';
 import request from 'request';
@@ -9,12 +9,19 @@ type APIMethods = 'GET' | 'POST' | 'DELETE' | 'PUT';
 export abstract class BitmexAbstractAPI {
 
     abstract readonly basePath: string;
+    readonly host: string;
+    readonly apiKeySecret: string | null;
+    readonly apiKeyID: string | null;
 
     private ratelimit: { limit: number; remaining: number; reset: number; } | null = null;
 
-    constructor(private credentials?: BitmexCredentials) { }
+    constructor(options?: BitmexAPIOptions) {
+        this.host = options && !!options.testnet ? 'https://testnet.bitmex.com' : 'https://www.bitmex.com';
+        this.apiKeyID = options && options.apiKeyID || null;
+        this.apiKeySecret = options && options.apiKeySecret || null;
+    }
 
-    private getRateLimitDelay() {
+    private getRateLimitTimeout() {
         const rate = this.ratelimit;
         return rate != null && rate.remaining <= 0 ? Math.max(rate.reset - new Date().valueOf(), 0) : 0;
     }
@@ -23,10 +30,16 @@ export abstract class BitmexAbstractAPI {
         if (opts.qs && Object.keys(opts.qs).length === 0) { delete opts.qs; }
         if (opts.form && Object.keys(opts.form).length === 0) { delete opts.form; }
 
-        const url = `${this.basePath}${endpoint}`;
+        const url = `${ this.host }${this.basePath}${endpoint}`;
         const path = urlParse(url).pathname || '';
 
-        const headers = auth && this.credentials ? getAuthHeaders(this.credentials, method, path, opts) : {};
+        const headers = auth ? getAuthHeaders({
+            apiKeyID: this.apiKeyID,
+            apiKeySecret: this.apiKeySecret,
+            method,
+            path,
+            opts
+        }) : {};
 
         const options = {
             method,
@@ -36,6 +49,7 @@ export abstract class BitmexAbstractAPI {
             ...opts
         };
 
+        const timeout = this.getRateLimitTimeout();
         return new Promise<T>((resolve, reject) => {
             setTimeout(() => {
                 request(options, (error, response, body) => {
@@ -51,7 +65,7 @@ export abstract class BitmexAbstractAPI {
 
                     resolve(body);
                 });
-            }, this.getRateLimitDelay());
+            }, timeout);
         });
     }
 }
