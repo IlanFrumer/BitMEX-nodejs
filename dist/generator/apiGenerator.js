@@ -19,9 +19,6 @@ request_1.default.get(SWAGGER, (err, res, body) => tslib_1.__awaiter(this, void 
     }
     const data = JSON.parse(body);
     const swagger = new SwaggerParser_1.SwaggerParser(data);
-    const interfacesBody = [];
-    const classBody = [];
-    classBody.push(`readonly basePath = 'https://www.bitmex.com${data.basePath}';`);
     yield TSWriter_1.TSWriter(outputInterfaces, `
     ${HEADER}
     ${swagger.createInterfaces()}

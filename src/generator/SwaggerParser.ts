@@ -208,7 +208,7 @@ export class SwaggerParser {
 
     createClass() {
         const classBody: string[] = [];
-        classBody.push(`readonly basePath = 'https://www.bitmex.com${this.data.basePath}';`);
+        classBody.push(`readonly basePath = '${this.data.basePath}';`);
         for (const [type, lines] of this.pathesMap.entries()) {
             classBody.push('');
             classBody.push(`public ${type} = {`);

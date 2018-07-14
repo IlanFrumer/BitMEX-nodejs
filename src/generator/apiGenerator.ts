@@ -19,11 +19,6 @@ request.get(SWAGGER, async (err, res, body) => {
     const data = JSON.parse(body);
     const swagger = new SwaggerParser(data);
 
-    const interfacesBody = [];
-
-    const classBody = [];
-    classBody.push(`readonly basePath = 'https://www.bitmex.com${data.basePath}';`);
-
     await TSWriter(outputInterfaces, `
     ${HEADER}
     ${ swagger.createInterfaces() }
