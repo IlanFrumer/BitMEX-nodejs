@@ -18,6 +18,7 @@
   "author": "Ilan Frumer <ilanfrumer@gmail.com>",
   "license": "MIT",
   "dependencies": {
+    "app-root-path": "^2.1.0",
     "querystring": "^0.2.0",
     "request": "^2.87.0",
     "rxjs": "^6.2.2",
@@ -26,6 +27,7 @@
     "ws": "^5.2.2"
   },
   "devDependencies": {
+    "@types/app-root-path": "^1.2.4",
     "@types/node": "^10.5.2",
     "@types/request": "^2.47.1",
     "@types/ws": "^5.1.2",

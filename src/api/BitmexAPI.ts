@@ -2,7 +2,7 @@
 
 // tslint:disable:max-line-length
 import { BitmexAbstractAPI } from './BitmexAbstractAPI';
-import * as BITMEX from './BitmexInterfaces';
+import * as BITMEX from '../common/BitmexInterfaces';
 export class BitmexAPI extends BitmexAbstractAPI {
     readonly basePath = '/api/v1';
 

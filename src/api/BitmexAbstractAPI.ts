@@ -1,8 +1,8 @@
-import { getAuthHeaders } from './BitmexAuth';
-import { BitmexAPIOptions } from './BitmexOptions';
-
-import { parse as urlParse } from 'url';
 import request from 'request';
+import { parse as urlParse } from 'url';
+
+import { getAuthHeaders } from '../common/BitmexAuth';
+import { BitmexAPIOptions } from './BitmexAPIOptions';
 
 type APIMethods = 'GET' | 'POST' | 'DELETE' | 'PUT';
 
@@ -15,10 +15,10 @@ export abstract class BitmexAbstractAPI {
 
     private ratelimit: { limit: number; remaining: number; reset: number; } | null = null;
 
-    constructor(options?: BitmexAPIOptions) {
-        this.host = options && !!options.testnet ? 'https://testnet.bitmex.com' : 'https://www.bitmex.com';
-        this.apiKeyID = options && options.apiKeyID || null;
-        this.apiKeySecret = options && options.apiKeySecret || null;
+    constructor(options: BitmexAPIOptions = {}) {
+        this.host = !!options.testnet ? 'https://testnet.bitmex.com' : 'https://www.bitmex.com';
+        this.apiKeyID = options.apiKeyID || null;
+        this.apiKeySecret = options.apiKeySecret || null;
     }
 
     private getRateLimitTimeout() {

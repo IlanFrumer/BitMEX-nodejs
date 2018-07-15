@@ -1,13 +1,9 @@
 import { Subscription } from 'rxjs/Rx';
-import { BitmexObservable, ITableMessage } from './BitmexBaseSucket';
+import { ITableMessage } from './ITableMessage';
+import { BitmexObservable } from './BitmexObservable';
+import { BitmexTableError } from './BitmexTableError';
 
 const DEFAULT_MAX_TABLE_LENGTH = 1000;
-
-class BitmexTableError extends Error {
-    constructor(table: string, action: string) {
-        super(`The data in the store ${ table } is not keyed for ${ action } 's.Please email support@bitmex.com if you see this.`);
-    }
-}
 
 export class BitmexTable<T> {
 
@@ -57,7 +53,5 @@ export class BitmexTable<T> {
         if (diff > 0) {
             this.data.splice(0, diff);
         }
-
-        console.log(message.table, this.data.length);
     }
 }

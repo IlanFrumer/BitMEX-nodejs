@@ -1,4 +1,4 @@
-import { BitmexAPIOptions } from './BitmexOptions';
+import { BitmexAPIOptions } from './BitmexAPIOptions';
 declare type APIMethods = 'GET' | 'POST' | 'DELETE' | 'PUT';
 export declare abstract class BitmexAbstractAPI {
     abstract readonly basePath: string;

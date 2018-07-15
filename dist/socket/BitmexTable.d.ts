@@ -1,5 +1,5 @@
 import { Subscription } from 'rxjs/Rx';
-import { BitmexObservable } from './BitmexBaseSucket';
+import { BitmexObservable } from './BitmexObservable';
 export declare class BitmexTable<T> {
     private options;
     data: T[];

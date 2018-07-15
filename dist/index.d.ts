@@ -1,4 +1,4 @@
-import * as BITMEX from './BitmexInterfaces';
+import * as BITMEX from './common/BitmexInterfaces';
 export { BITMEX };
-export { BitmexAPI } from './BitmexAPI';
-export { BitmexSocket } from './BitmexSocket';
+export { BitmexAPI } from './api/BitmexAPI';
+export { BitmexSocket } from './socket/BitmexSocket';

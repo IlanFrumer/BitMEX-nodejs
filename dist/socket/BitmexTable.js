@@ -1,11 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const BitmexTableError_1 = require("./BitmexTableError");
 const DEFAULT_MAX_TABLE_LENGTH = 1000;
-class BitmexTableError extends Error {
-    constructor(table, action) {
-        super(`The data in the store ${table} is not keyed for ${action} 's.Please email support@bitmex.com if you see this.`);
-    }
-}
 class BitmexTable {
     constructor(observable, options) {
         this.options = options;
@@ -24,7 +20,7 @@ class BitmexTable {
                 break;
             case 'update':
                 if (this.keys.length === 0) {
-                    throw new BitmexTableError(message.table, message.action);
+                    throw new BitmexTableError_1.BitmexTableError(message.table, message.action);
                 }
                 for (const item of message.data) {
                     const idx = this.data.findIndex((d) => this.keys.every(k => d[k] === item[k]));
@@ -38,7 +34,7 @@ class BitmexTable {
                 break;
             case 'delete':
                 if (this.keys.length === 0) {
-                    throw new BitmexTableError(message.table, message.action);
+                    throw new BitmexTableError_1.BitmexTableError(message.table, message.action);
                 }
                 for (const item of message.data) {
                     const idx = this.data.findIndex((d) => this.keys.every(k => d[k] === item[k]));
@@ -56,7 +52,6 @@ class BitmexTable {
         if (diff > 0) {
             this.data.splice(0, diff);
         }
-        console.log(message.table, this.data.length);
     }
 }
 exports.BitmexTable = BitmexTable;

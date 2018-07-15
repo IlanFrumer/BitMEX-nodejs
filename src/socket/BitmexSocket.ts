@@ -1,4 +1,4 @@
-import * as BITMEX from './BitmexInterfaces';
+import * as BITMEX from '../common/BitmexInterfaces';
 import { BitmexBaseSocket } from './BitmexBaseSucket';
 
 export class BitmexSocket extends BitmexBaseSocket {

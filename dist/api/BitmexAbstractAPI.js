@@ -1,15 +1,15 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const tslib_1 = require("tslib");
-const BitmexAuth_1 = require("./BitmexAuth");
-const url_1 = require("url");
 const request_1 = tslib_1.__importDefault(require("request"));
+const url_1 = require("url");
+const BitmexAuth_1 = require("../common/BitmexAuth");
 class BitmexAbstractAPI {
-    constructor(options) {
+    constructor(options = {}) {
         this.ratelimit = null;
-        this.host = options && !!options.testnet ? 'https://testnet.bitmex.com' : 'https://www.bitmex.com';
-        this.apiKeyID = options && options.apiKeyID || null;
-        this.apiKeySecret = options && options.apiKeySecret || null;
+        this.host = !!options.testnet ? 'https://testnet.bitmex.com' : 'https://www.bitmex.com';
+        this.apiKeyID = options.apiKeyID || null;
+        this.apiKeySecret = options.apiKeySecret || null;
     }
     getRateLimitTimeout() {
         const rate = this.ratelimit;
