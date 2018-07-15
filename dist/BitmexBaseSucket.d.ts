@@ -27,6 +27,8 @@ export declare abstract class BitmexBaseSocket {
     protected createObservable<T>(table: string, opts?: {
         symbol?: string;
         filterKey?: number;
-    }): any;
+    }): BitmexObservable<T, ITableMessage & {
+        data: T[];
+    }>;
     private messageHandler;
 }
