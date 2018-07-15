@@ -15,6 +15,7 @@ export declare function getAuthHeaders({ apiKeyID, apiKeySecret, opts, method, p
 } | {
     'api-expires': number;
     'api-key': string;
-    'api-signature': string;
+    'api-signature': any;
 };
+export declare function getWSAuthQuery(apiKeyID: string, apiKeySecret: string): any;
 export {};

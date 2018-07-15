@@ -2,7 +2,9 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const crypto_1 = require("crypto");
 const querystring_1 = require("querystring");
+// prevents colliding nonces. Otherwise, use expires
 let nonceCounter = 0;
+const generateNonce = () => Date.now() * 1000 + (nonceCounter++ % 1000);
 function getAuthHeaders({ apiKeyID, apiKeySecret, opts, method, path }) {
     if (apiKeyID == null || apiKeySecret == null) {
         return {};
@@ -11,7 +13,7 @@ function getAuthHeaders({ apiKeyID, apiKeySecret, opts, method, path }) {
         path += '?' + querystring_1.stringify(opts.qs);
     }
     const data = opts.form ? querystring_1.stringify(opts.form) : '';
-    const nonce = Date.now() * 1000 + (nonceCounter++ % 1000); // prevents colliding nonces. Otherwise, use expires
+    const nonce = generateNonce();
     const signature = crypto_1.createHmac('sha256', apiKeySecret).update(method + path + nonce + data).digest('hex');
     return {
         'api-expires': nonce,
@@ -20,3 +22,13 @@ function getAuthHeaders({ apiKeyID, apiKeySecret, opts, method, path }) {
     };
 }
 exports.getAuthHeaders = getAuthHeaders;
+function getWSAuthQuery(apiKeyID, apiKeySecret) {
+    const nonce = generateNonce();
+    const signature = crypto_1.createHmac('sha256', apiKeySecret).update('GET/realtime' + nonce).digest('hex');
+    return querystring_1.stringify({
+        'api-nonce': nonce,
+        'api-key': apiKeyID,
+        'api-signature': signature
+    });
+}
+exports.getWSAuthQuery = getWSAuthQuery;

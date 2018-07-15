@@ -1,5 +1,5 @@
 import { getAuthHeaders } from './BitmexAuth';
-import { BitmexAPIOptions } from './BitmexAPIOptions';
+import { BitmexAPIOptions } from './BitmexOptions';
 
 import { parse as urlParse } from 'url';
 import request from 'request';

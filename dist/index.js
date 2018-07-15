@@ -5,3 +5,5 @@ const BITMEX = tslib_1.__importStar(require("./BitmexInterfaces"));
 exports.BITMEX = BITMEX;
 var BitmexAPI_1 = require("./BitmexAPI");
 exports.BitmexAPI = BitmexAPI_1.BitmexAPI;
+var BitmexSocket_1 = require("./BitmexSocket");
+exports.BitmexSocket = BitmexSocket_1.BitmexSocket;

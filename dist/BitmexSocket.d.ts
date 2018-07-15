@@ -1,0 +1,33 @@
+import { BitmexBaseSocket } from './BitmexBaseSucket';
+export declare class BitmexSocket extends BitmexBaseSocket {
+    announcement(): any;
+    chat(channelID?: number): any;
+    connected(): any;
+    funding(symbol?: string): any;
+    instrument(symbol?: string): any;
+    insurance(): any;
+    liquidation(symbol?: string): any;
+    orderBookL2(symbol?: string): any;
+    orderBookL2_25(symbol?: string): any;
+    orderBook10(symbol?: string): any;
+    publicNotifications(): any;
+    quote(symbol?: string): any;
+    quoteBin1m(symbol?: string): any;
+    quoteBin5m(symbol?: string): any;
+    quoteBin1h(symbol?: string): any;
+    quoteBin1d(symbol?: string): any;
+    settlement(symbol?: string): any;
+    trade(symbol?: string): any;
+    tradeBin1m(symbol?: string): any;
+    tradeBin5m(symbol?: string): any;
+    tradeBin1h(symbol?: string): any;
+    tradeBin1d(symbol?: string): any;
+    affiliate(): any;
+    execution(symbol?: string): any;
+    order(symbol?: string): any;
+    margin(): any;
+    position(symbol?: string): any;
+    privateNotifications(): any;
+    transact(): any;
+    wallet(): any;
+}
