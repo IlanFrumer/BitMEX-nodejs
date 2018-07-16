@@ -1,7 +1,7 @@
 import { ITableMessage } from './ITableMessage';
 import { BitmexSocketOptions } from './BitmexSocketOptions';
 import { BitmexObservable } from './BitmexObservable';
-export declare abstract class BitmexBaseSocket {
+export declare abstract class BitmexAbstractSocket {
     private tableSubject$;
     private subscribers;
     private subscriptions;

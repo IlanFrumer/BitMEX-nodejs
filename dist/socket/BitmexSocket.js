@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const BitmexBaseSucket_1 = require("./BitmexBaseSucket");
-class BitmexSocket extends BitmexBaseSucket_1.BitmexBaseSocket {
+const BitmexAbstractSocket_1 = require("./BitmexAbstractSocket");
+class BitmexSocket extends BitmexAbstractSocket_1.BitmexAbstractSocket {
     /*
      * Site announcements
      */

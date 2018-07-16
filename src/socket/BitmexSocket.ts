@@ -1,7 +1,7 @@
 import * as BITMEX from '../common/BitmexInterfaces';
-import { BitmexBaseSocket } from './BitmexBaseSucket';
+import { BitmexAbstractSocket } from './BitmexAbstractSocket';
 
-export class BitmexSocket extends BitmexBaseSocket {
+export class BitmexSocket extends BitmexAbstractSocket {
 
     /*
      * Site announcements
@@ -86,7 +86,7 @@ export class BitmexSocket extends BitmexBaseSocket {
     /*
      * Settlements
      */
-    settlement (symbol?: string) { return this.createObservable<BITMEX.Quote>('settlement', { symbol }); }
+    settlement (symbol?: string) { return this.createObservable<BITMEX.Settlement>('settlement', { symbol }); }
 
     /*
      * Live trades

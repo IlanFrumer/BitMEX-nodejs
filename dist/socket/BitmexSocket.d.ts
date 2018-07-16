@@ -1,6 +1,6 @@
 import * as BITMEX from '../common/BitmexInterfaces';
-import { BitmexBaseSocket } from './BitmexBaseSucket';
-export declare class BitmexSocket extends BitmexBaseSocket {
+import { BitmexAbstractSocket } from './BitmexAbstractSocket';
+export declare class BitmexSocket extends BitmexAbstractSocket {
     announcement(): import("./BitmexObservable").BitmexObservable<BITMEX.Announcement, import("./ITableMessage").ITableMessage & {
         data: BITMEX.Announcement[];
     }>;
@@ -49,8 +49,8 @@ export declare class BitmexSocket extends BitmexBaseSocket {
     quoteBin1d(symbol?: string): import("./BitmexObservable").BitmexObservable<BITMEX.Quote, import("./ITableMessage").ITableMessage & {
         data: BITMEX.Quote[];
     }>;
-    settlement(symbol?: string): import("./BitmexObservable").BitmexObservable<BITMEX.Quote, import("./ITableMessage").ITableMessage & {
-        data: BITMEX.Quote[];
+    settlement(symbol?: string): import("./BitmexObservable").BitmexObservable<BITMEX.Settlement, import("./ITableMessage").ITableMessage & {
+        data: BITMEX.Settlement[];
     }>;
     trade(symbol?: string): import("./BitmexObservable").BitmexObservable<BITMEX.Trade, import("./ITableMessage").ITableMessage & {
         data: BITMEX.Trade[];

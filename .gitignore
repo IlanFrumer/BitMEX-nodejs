@@ -1,5 +1,5 @@
 node_modules/
-config.json
+config*.json
 src/test.ts
 src/test.ts
 dist/test.d.ts
