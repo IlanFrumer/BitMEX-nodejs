@@ -6,7 +6,7 @@ import { ITableMessage } from './ITableMessage';
 import { BitmexSocketOptions } from './BitmexSocketOptions';
 import { BitmexObservable } from './BitmexObservable';
 
-const debug = require('debug')('BitMEX:socket');
+const debug = require('debug')('bitmex-node');
 const PING = 10 * 1000;
 
 // TODO

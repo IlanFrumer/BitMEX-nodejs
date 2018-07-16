@@ -5,7 +5,7 @@ const Rx_1 = require("rxjs/Rx");
 const ws_1 = tslib_1.__importDefault(require("ws"));
 const BitmexAuth_1 = require("../common/BitmexAuth");
 const BitmexObservable_1 = require("./BitmexObservable");
-const debug = require('debug')('BitMEX:socket');
+const debug = require('debug')('bitmex-node');
 const PING = 10 * 1000;
 // TODO
 // {"op": "cancelAllAfter", "args": 60000}
