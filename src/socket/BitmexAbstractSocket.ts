@@ -83,7 +83,7 @@ export abstract class BitmexAbstractSocket {
 
         if (toUnsubscribe.size > 0) {
             // tslint:disable-next-line:no-unused-expression
-            this.send({ 'op': 'subscribe', 'args': Array.from(toUnsubscribe) }) &&
+            this.send({ 'op': 'unsubscribe', 'args': Array.from(toUnsubscribe) }) &&
                 toUnsubscribe.forEach(subscription => this.subscriptions.set(subscription, 'pending'));
         }
     }

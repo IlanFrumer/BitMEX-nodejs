@@ -67,7 +67,7 @@ class BitmexAbstractSocket {
         }
         if (toUnsubscribe.size > 0) {
             // tslint:disable-next-line:no-unused-expression
-            this.send({ 'op': 'subscribe', 'args': Array.from(toUnsubscribe) }) &&
+            this.send({ 'op': 'unsubscribe', 'args': Array.from(toUnsubscribe) }) &&
                 toUnsubscribe.forEach(subscription => this.subscriptions.set(subscription, 'pending'));
         }
     }
@@ -88,7 +88,6 @@ class BitmexAbstractSocket {
             subscription = table;
             filterFn = () => true;
         }
-        this.subscriptions.set(subscription, 'unsubscribed');
         const observable = new BitmexObservable_1.BitmexObservable(observer => {
             const sub$ = this.tableSubject$
                 .filter(d => d.table === table)
