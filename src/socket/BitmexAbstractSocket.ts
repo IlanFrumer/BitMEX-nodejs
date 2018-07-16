@@ -1,4 +1,4 @@
-import { Subscriber, Subject} from 'rxjs/Rx';
+import { Subscriber, Subject } from 'rxjs/Rx';
 import WebSocket from 'ws';
 
 import { getWSAuthQuery } from '../common/BitmexAuth';
@@ -64,7 +64,6 @@ export abstract class BitmexAbstractSocket {
             const state = this.subscriptions.get(subscription) || 'unsubscribed';
             if (state === 'unsubscribed') {
                 toSubscribe.add(subscription);
-
             }
         }
 
@@ -108,7 +107,6 @@ export abstract class BitmexAbstractSocket {
             filterFn = () => true;
         }
 
-        this.subscriptions.set(subscription, 'unsubscribed');
         const observable = new BitmexObservable<T, Data>(observer => {
             const sub$ = this.tableSubject$
                 .filter(d => d.table === table)
