@@ -1,5 +1,11 @@
 import * as BITMEX from '../common/BitmexInterfaces';
 import { BitmexAbstractSocket } from './BitmexAbstractSocket';
+export interface OrderBook {
+    symbol: string;
+    timestamp: string;
+    asks: [number, number][];
+    bids: [number, number][];
+}
 export declare class BitmexSocket extends BitmexAbstractSocket {
     announcement(): import("./BitmexObservable").BitmexObservable<BITMEX.Announcement, import("./ITableMessage").ITableMessage & {
         data: BITMEX.Announcement[];
@@ -25,8 +31,8 @@ export declare class BitmexSocket extends BitmexAbstractSocket {
     orderBookL2(symbol?: string): import("./BitmexObservable").BitmexObservable<BITMEX.OrderBookL2, import("./ITableMessage").ITableMessage & {
         data: BITMEX.OrderBookL2[];
     }>;
-    orderBookL2_25(symbol?: string): import("./BitmexObservable").BitmexObservable<any, import("./ITableMessage").ITableMessage & {
-        data: any[];
+    orderBookL2_25(symbol?: string): import("./BitmexObservable").BitmexObservable<OrderBook, import("./ITableMessage").ITableMessage & {
+        data: OrderBook[];
     }>;
     orderBook10(symbol?: string): import("./BitmexObservable").BitmexObservable<any, import("./ITableMessage").ITableMessage & {
         data: any[];

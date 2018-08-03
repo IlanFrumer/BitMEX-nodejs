@@ -1,6 +1,13 @@
 import * as BITMEX from '../common/BitmexInterfaces';
 import { BitmexAbstractSocket } from './BitmexAbstractSocket';
 
+export interface OrderBook {
+    symbol: string;
+    timestamp: string;
+    asks: [number, number][];
+    bids: [number, number][];
+}
+
 export class BitmexSocket extends BitmexAbstractSocket {
 
     /*
@@ -46,7 +53,7 @@ export class BitmexSocket extends BitmexAbstractSocket {
     /*
      * Full level 2_25 orderBook
      */
-    orderBookL2_25 (symbol?: string) { return this.createObservable<any>('orderBookL2', { symbol }); }
+    orderBookL2_25 (symbol?: string) { return this.createObservable<OrderBook>('orderBookL2', { symbol }); }
 
     /*
      * Top 10 levels using traditional full book push
