@@ -51,6 +51,8 @@ export class BitmexTable<T> {
                     }
                 }
                 break;
+            default:
+                return;
         }
 
         // Limit table size
@@ -58,5 +60,7 @@ export class BitmexTable<T> {
         if (diff > 0) {
             this.data.splice(0, diff);
         }
+
+        this.emitter.next(this.data);
     }
 }

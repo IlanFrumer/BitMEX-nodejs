@@ -52,12 +52,15 @@ class BitmexTable {
                     }
                 }
                 break;
+            default:
+                return;
         }
         // Limit table size
         const diff = this.data.length - (this.options.maxTableLength || DEFAULT_MAX_TABLE_LENGTH);
         if (diff > 0) {
             this.data.splice(0, diff);
         }
+        this.emitter.next(this.data);
     }
 }
 exports.BitmexTable = BitmexTable;
