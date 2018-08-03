@@ -1,4 +1,4 @@
-import { Subscription } from 'rxjs/Rx';
+import { Subscription, ReplaySubject } from 'rxjs/Rx';
 import { ITableMessage } from './ITableMessage';
 import { BitmexObservable } from './BitmexObservable';
 import { BitmexTableError } from './BitmexTableError';
@@ -7,12 +7,17 @@ const DEFAULT_MAX_TABLE_LENGTH = 1000;
 
 export class BitmexTable<T> {
 
-    public data: T[] = [];
+    private emitter = new ReplaySubject<T[]>(1);
+    private data: T[] = [];
     private keys: string[] = [];
-    readonly subscription: Subscription;
+    private readonly subscription: Subscription;
 
-    constructor(observable: BitmexObservable<T, any>, private options: { maxTableLength?: number }) {
+    constructor(private observable: BitmexObservable<T, any>, private options: { maxTableLength?: number }) {
         this.subscription = observable.subscribe(data => this.on(data));
+    }
+
+    subscribe(fn: (data: T[]) => void) {
+        return this.emitter.subscribe(fn);
     }
 
     private on(message: { data: T[]} & ITableMessage) {

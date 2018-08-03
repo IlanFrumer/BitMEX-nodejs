@@ -1,13 +1,19 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const Rx_1 = require("rxjs/Rx");
 const BitmexTableError_1 = require("./BitmexTableError");
 const DEFAULT_MAX_TABLE_LENGTH = 1000;
 class BitmexTable {
     constructor(observable, options) {
+        this.observable = observable;
         this.options = options;
+        this.emitter = new Rx_1.ReplaySubject(1);
         this.data = [];
         this.keys = [];
         this.subscription = observable.subscribe(data => this.on(data));
+    }
+    subscribe(fn) {
+        return this.emitter.subscribe(fn);
     }
     on(message) {
         switch (message.action) {
