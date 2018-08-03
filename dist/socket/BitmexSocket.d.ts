@@ -31,11 +31,11 @@ export declare class BitmexSocket extends BitmexAbstractSocket {
     orderBookL2(symbol?: string): import("./BitmexObservable").BitmexObservable<BITMEX.OrderBookL2, import("./ITableMessage").ITableMessage & {
         data: BITMEX.OrderBookL2[];
     }>;
-    orderBookL2_25(symbol?: string): import("./BitmexObservable").BitmexObservable<OrderBook, import("./ITableMessage").ITableMessage & {
-        data: OrderBook[];
-    }>;
-    orderBook10(symbol?: string): import("./BitmexObservable").BitmexObservable<any, import("./ITableMessage").ITableMessage & {
+    orderBookL2_25(symbol?: string): import("./BitmexObservable").BitmexObservable<any, import("./ITableMessage").ITableMessage & {
         data: any[];
+    }>;
+    orderBook10(symbol?: string): import("./BitmexObservable").BitmexObservable<OrderBook, import("./ITableMessage").ITableMessage & {
+        data: OrderBook[];
     }>;
     publicNotifications(): import("./BitmexObservable").BitmexObservable<any, import("./ITableMessage").ITableMessage & {
         data: any[];

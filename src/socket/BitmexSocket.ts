@@ -53,12 +53,12 @@ export class BitmexSocket extends BitmexAbstractSocket {
     /*
      * Full level 2_25 orderBook
      */
-    orderBookL2_25 (symbol?: string) { return this.createObservable<OrderBook>('orderBookL2', { symbol }); }
+    orderBookL2_25 (symbol?: string) { return this.createObservable<any>('orderBookL2', { symbol }); }
 
     /*
      * Top 10 levels using traditional full book push
      */
-    orderBook10 (symbol?: string) { return this.createObservable<any>('orderBook10', { symbol }); }
+    orderBook10 (symbol?: string) { return this.createObservable<OrderBook>('orderBook10', { symbol }); }
 
     /*
      * System-wide notifications (used for short-lived messages)
