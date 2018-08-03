@@ -553,6 +553,7 @@ export interface Affiliate {
     pendingPayout: number;
     timestamp: string;
     referrerAccount: number;
+    referralDiscount: number;
 }
 /**
  * Account Operations
@@ -883,7 +884,6 @@ export interface InstrumentQuery {
     endTime?: string;
 }
 export interface InstrumentCompositeIndexQuery {
-    account?: number;
     /**
      * The composite index symbol.
      */
@@ -1566,8 +1566,6 @@ export interface UserPreferencesPost {
     overwrite?: boolean;
 }
 export interface UserPut {
-    firstname?: string;
-    lastname?: string;
     oldPassword?: string;
     newPassword?: string;
     newPasswordConfirm?: string;

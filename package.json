@@ -13,7 +13,8 @@
     "patch": "npm version patch && npm publish",
     "postpublish": "git push origin master --follow-tags",
     "prepublishOnly": "npm run build -s",
-    "tsc:watch": "npm run build -- --watch"
+    "generate": "node dist/generator/apiGenerator.js",
+    "watch": "npm run build -- --watch"
   },
   "author": "Ilan Frumer <ilanfrumer@gmail.com>",
   "license": "MIT",
@@ -25,15 +26,15 @@
     "rxjs": "^6.2.2",
     "rxjs-compat": "^6.2.2",
     "tslib": "^1.9.3",
-    "ws": "^5.2.2"
+    "ws": "^6.0.0"
   },
   "devDependencies": {
     "@types/app-root-path": "^1.2.4",
     "@types/debug": "0.0.30",
-    "@types/node": "^10.5.2",
+    "@types/node": "^10.5.5",
     "@types/request": "^2.47.1",
     "@types/ws": "^5.1.2",
-    "typescript": "^2.9.2",
+    "typescript": "^3.0.1",
     "typescript-formatter": "^7.2.2"
   }
 }

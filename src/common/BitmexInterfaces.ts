@@ -584,6 +584,7 @@ export interface Affiliate {
     pendingPayout: number; // format: int64
     timestamp: string; // format: date-time
     referrerAccount: number; // format: double
+    referralDiscount: number; // format: double
 }
 
 /**
@@ -979,8 +980,6 @@ export interface InstrumentQuery {
 }
 
 export interface InstrumentCompositeIndexQuery {
-
-    account?: number;
 
     /**
      * The composite index symbol.
@@ -1852,10 +1851,6 @@ export interface UserPreferencesPost {
 }
 
 export interface UserPut {
-
-    firstname?: string;
-
-    lastname?: string;
 
     oldPassword?: string;
 
