@@ -3,8 +3,8 @@ import WebSocket from 'ws';
 
 import { getWSAuthQuery } from '../common/BitmexAuth';
 import { ITableMessage } from './ITableMessage';
-import { BitmexSocketOptions } from './BitmexSocketOptions';
 import { BitmexObservable } from './BitmexObservable';
+import { BitmexOptions } from '../common/BitmexOptions';
 
 const debug = require('debug')('bitmex-node');
 const PING = 10 * 1000;
@@ -20,7 +20,7 @@ export abstract class BitmexAbstractSocket {
     private subscriptions = new Map<string, 'unsubscribed' | 'subscribed' | 'pending'>();
     private send: (message: object | 'ping' | '"help"') => void;
 
-    constructor(options: BitmexSocketOptions = {}) {
+    constructor(options: BitmexOptions = {}) {
 
         let endpoint = !!options.testnet ? 'wss://testnet.bitmex.com/realtime' : 'wss://www.bitmex.com/realtime';
 

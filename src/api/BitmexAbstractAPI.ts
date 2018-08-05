@@ -2,7 +2,7 @@ import request from 'request';
 import { parse as urlParse } from 'url';
 
 import { getAuthHeaders } from '../common/BitmexAuth';
-import { BitmexAPIOptions } from './BitmexAPIOptions';
+import { BitmexOptions } from '../common/BitmexOptions';
 
 type APIMethods = 'GET' | 'POST' | 'DELETE' | 'PUT';
 
@@ -15,7 +15,7 @@ export abstract class BitmexAbstractAPI {
 
     private ratelimit: { limit: number; remaining: number; reset: number; } | null = null;
 
-    constructor(options: BitmexAPIOptions = {}) {
+    constructor(options: BitmexOptions = {}) {
         this.host = !!options.testnet ? 'https://testnet.bitmex.com' : 'https://www.bitmex.com';
         this.apiKeyID = options.apiKeyID || null;
         this.apiKeySecret = options.apiKeySecret || null;
