@@ -3,17 +3,20 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const Rx_1 = require("rxjs/Rx");
 const BitmexTableError_1 = require("./BitmexTableError");
 const DEFAULT_MAX_TABLE_LENGTH = 1000;
-class BitmexTable {
+class BitmexTable extends Rx_1.Observable {
     constructor(observable, options) {
+        super((subscriber) => {
+            const subs = this.data$.subscribe(d => subscriber.next(d));
+            return () => subs.unsubscribe();
+        });
         this.observable = observable;
         this.options = options;
-        this.emitter = new Rx_1.ReplaySubject(1);
         this.data = [];
         this.keys = [];
-        this.subscription = observable.subscribe(data => this.on(data));
-    }
-    subscribe(fn) {
-        return this.emitter.subscribe(fn);
+        this.data$ = this.observable
+            .do((data) => this.on(data))
+            .map(() => this.data)
+            .share();
     }
     on(message) {
         switch (message.action) {
@@ -60,7 +63,6 @@ class BitmexTable {
         if (diff > 0) {
             this.data.splice(0, diff);
         }
-        this.emitter.next(this.data);
     }
 }
 exports.BitmexTable = BitmexTable;
