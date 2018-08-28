@@ -196,6 +196,8 @@ export interface Instrument {
     totalTurnover: number; // format: int64
     turnover: number; // format: int64
     turnover24h: number; // format: int64
+    homeNotional24h: number; // format: double
+    foreignNotional24h: number; // format: double
     prevPrice24h: number; // format: double
     vwap: number; // format: double
     highPrice: number; // format: double
@@ -1751,6 +1753,13 @@ export interface UserWalletHistoryQuery {
 export interface UserWalletSummaryQuery {
 
     currency?: string; // DEFAULT: XBt
+}
+
+export interface UserExecutionHistoryQuery {
+
+    symbol?: string; // DEFAULT: XBTUSD
+
+    timestamp?: string; // DEFAULT: 2017-02-13T12:00:00.000Z
 }
 
 export interface UserMinWithdrawalFeeQuery {

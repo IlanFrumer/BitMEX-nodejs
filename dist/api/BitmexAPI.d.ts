@@ -469,6 +469,11 @@ export declare class BitmexAPI extends BitmexAbstractAPI {
          */
         getWalletSummary: (qs?: BITMEX.UserWalletSummaryQuery) => Promise<BITMEX.Transaction[]>;
         /**
+         * @Authorized
+         * Get the execution history by day.
+         */
+        getExecutionHistory: (qs?: BITMEX.UserExecutionHistoryQuery) => Promise<any>;
+        /**
          * Get the minimum withdrawal fee for a currency.This is changed based on network conditions to ensure timely withdrawals. During network congestion, this may be high. The fee is returned in the same currency.
          */
         minWithdrawalFee: (qs?: BITMEX.UserMinWithdrawalFeeQuery) => Promise<any>;

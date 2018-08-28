@@ -470,6 +470,11 @@ class BitmexAPI extends BitmexAbstractAPI_1.BitmexAbstractAPI {
              */
             getWalletSummary: (qs = {}) => tslib_1.__awaiter(this, void 0, void 0, function* () { return this.request('GET', '/user/walletSummary', { qs }, true); }),
             /**
+             * @Authorized
+             * Get the execution history by day.
+             */
+            getExecutionHistory: (qs = {}) => tslib_1.__awaiter(this, void 0, void 0, function* () { return this.request('GET', '/user/executionHistory', { qs }, true); }),
+            /**
              * Get the minimum withdrawal fee for a currency.This is changed based on network conditions to ensure timely withdrawals. During network congestion, this may be high. The fee is returned in the same currency.
              */
             minWithdrawalFee: (qs = {}) => tslib_1.__awaiter(this, void 0, void 0, function* () { return this.request('GET', '/user/minWithdrawalFee', { qs }); }),

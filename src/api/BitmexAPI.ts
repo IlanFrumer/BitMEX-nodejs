@@ -595,6 +595,13 @@ export class BitmexAPI extends BitmexAbstractAPI {
             this.request<BITMEX.Transaction[]>('GET', '/user/walletSummary', { qs }, true),
 
         /**
+         * @Authorized
+         * Get the execution history by day.
+         */
+        getExecutionHistory: async (qs: BITMEX.UserExecutionHistoryQuery = {}) =>
+            this.request<any>('GET', '/user/executionHistory', { qs }, true),
+
+        /**
          * Get the minimum withdrawal fee for a currency.This is changed based on network conditions to ensure timely withdrawals. During network congestion, this may be high. The fee is returned in the same currency.
          */
         minWithdrawalFee: async (qs: BITMEX.UserMinWithdrawalFeeQuery = {}) =>

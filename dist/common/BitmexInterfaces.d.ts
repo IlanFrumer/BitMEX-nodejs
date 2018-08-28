@@ -185,6 +185,8 @@ export interface Instrument {
     totalTurnover: number;
     turnover: number;
     turnover24h: number;
+    homeNotional24h: number;
+    foreignNotional24h: number;
     prevPrice24h: number;
     vwap: number;
     highPrice: number;
@@ -1494,6 +1496,10 @@ export interface UserWalletHistoryQuery {
 }
 export interface UserWalletSummaryQuery {
     currency?: string;
+}
+export interface UserExecutionHistoryQuery {
+    symbol?: string;
+    timestamp?: string;
 }
 export interface UserMinWithdrawalFeeQuery {
     currency?: string;
