@@ -143,12 +143,12 @@ class BitmexAPI extends BitmexAbstractAPI_1.BitmexAbstractAPI {
              */
             get: (qs = {}) => tslib_1.__awaiter(this, void 0, void 0, function* () { return this.request('GET', '/liquidation', { qs }); }),
         };
-        this.Notification = {
+        this.GlobalNotification = {
             /**
              * @Authorized
-             * Get your current notifications.This is an upcoming feature and currently does not return data.
+             * Get your current GlobalNotifications.This is an upcoming feature and currently does not return data.
              */
-            get: () => tslib_1.__awaiter(this, void 0, void 0, function* () { return this.request('GET', '/notification', {}, true); }),
+            get: () => tslib_1.__awaiter(this, void 0, void 0, function* () { return this.request('GET', '/globalNotification', {}, true); }),
         };
         this.Order = {
             /**
@@ -356,7 +356,7 @@ class BitmexAPI extends BitmexAbstractAPI_1.BitmexAbstractAPI {
              * * **crossMargin**: True/false depending on whether you set cross margin on this position.
              * * **deleveragePercentile**: Indicates where your position is in the ADL queue.
              * * **rebalancedPnl**: The value of realised PNL that has transferred to your wallet for this position.
-             * * **prevRebalancedPnl**: The value of realised PNL that has transferred to your wallet for this position since the position was closed.
+             * * **prevRealisedPnl**: The value of realised PNL that has transferred to your wallet for this position since the position was closed.
              * * **currentQty**: The current position amount in contracts.
              * * **currentCost**: The current cost of the position in the settlement currency of the symbol (_currency_).
              * * **currentComm**: The current commission of the position in the settlement currency of the symbol (_currency_).
@@ -444,7 +444,7 @@ class BitmexAPI extends BitmexAbstractAPI_1.BitmexAbstractAPI {
              */
             get: (qs = {}) => tslib_1.__awaiter(this, void 0, void 0, function* () { return this.request('GET', '/trade', { qs }); }),
             /**
-             * Get previous trades in time buckets.
+             * Get previous trades in time buckets.Please note the `open` price **is equal** to the `close` price of the previous timeframe bucket.
              */
             getBucketed: (qs = {}) => tslib_1.__awaiter(this, void 0, void 0, function* () { return this.request('GET', '/trade/bucketed', { qs }); }),
         };
@@ -516,7 +516,7 @@ class BitmexAPI extends BitmexAbstractAPI_1.BitmexAbstractAPI {
              */
             getAffiliateStatus: () => tslib_1.__awaiter(this, void 0, void 0, function* () { return this.request('GET', '/user/affiliateStatus', {}, true); }),
             /**
-             * Check if a referral code is valid.If the code is valid, responds with the referral code's discount (e.g. `0.1` for 10%). Otherwise, will return a 404.
+             * Check if a referral code is valid.If the code is valid, responds with the referral code's discount (e.g. `0.1` for 10%). Otherwise, will return a 404 or 451 if invalid.
              */
             checkReferralCode: (qs = {}) => tslib_1.__awaiter(this, void 0, void 0, function* () { return this.request('GET', '/user/checkReferralCode', { qs }); }),
             /**
@@ -553,6 +553,18 @@ class BitmexAPI extends BitmexAbstractAPI_1.BitmexAbstractAPI {
              * Get your account's margin status. Send a currency of "all" to receive an array of all supported currencies.
              */
             getMargin: (qs = {}) => tslib_1.__awaiter(this, void 0, void 0, function* () { return this.request('GET', '/user/margin', { qs }, true); }),
+            /**
+             * @Authorized
+             * Register your communication token for mobile clients
+             */
+            communicationToken: (form) => tslib_1.__awaiter(this, void 0, void 0, function* () { return this.request('POST', '/user/communicationToken', { form }, true); }),
+        };
+        this.UserEvent = {
+            /**
+             * @Authorized
+             * Get your user events
+             */
+            get: (qs = {}) => tslib_1.__awaiter(this, void 0, void 0, function* () { return this.request('GET', '/userEvent', { qs }, true); }),
         };
     }
 }

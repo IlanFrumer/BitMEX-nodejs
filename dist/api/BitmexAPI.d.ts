@@ -142,12 +142,12 @@ export declare class BitmexAPI extends BitmexAbstractAPI {
          */
         get: (qs?: BITMEX.LiquidationQuery) => Promise<BITMEX.Liquidation[]>;
     };
-    Notification: {
+    GlobalNotification: {
         /**
          * @Authorized
-         * Get your current notifications.This is an upcoming feature and currently does not return data.
+         * Get your current GlobalNotifications.This is an upcoming feature and currently does not return data.
          */
-        get: () => Promise<BITMEX.Notification[]>;
+        get: () => Promise<BITMEX.GlobalNotification[]>;
     };
     Order: {
         /**
@@ -355,7 +355,7 @@ export declare class BitmexAPI extends BitmexAbstractAPI {
          * * **crossMargin**: True/false depending on whether you set cross margin on this position.
          * * **deleveragePercentile**: Indicates where your position is in the ADL queue.
          * * **rebalancedPnl**: The value of realised PNL that has transferred to your wallet for this position.
-         * * **prevRebalancedPnl**: The value of realised PNL that has transferred to your wallet for this position since the position was closed.
+         * * **prevRealisedPnl**: The value of realised PNL that has transferred to your wallet for this position since the position was closed.
          * * **currentQty**: The current position amount in contracts.
          * * **currentCost**: The current cost of the position in the settlement currency of the symbol (_currency_).
          * * **currentComm**: The current commission of the position in the settlement currency of the symbol (_currency_).
@@ -443,7 +443,7 @@ export declare class BitmexAPI extends BitmexAbstractAPI {
          */
         get: (qs?: BITMEX.TradeQuery) => Promise<BITMEX.Trade[]>;
         /**
-         * Get previous trades in time buckets.
+         * Get previous trades in time buckets.Please note the `open` price **is equal** to the `close` price of the previous timeframe bucket.
          */
         getBucketed: (qs?: BITMEX.TradeBucketedQuery) => Promise<BITMEX.TradeBin[]>;
     };
@@ -515,7 +515,7 @@ export declare class BitmexAPI extends BitmexAbstractAPI {
          */
         getAffiliateStatus: () => Promise<BITMEX.Affiliate>;
         /**
-         * Check if a referral code is valid.If the code is valid, responds with the referral code's discount (e.g. `0.1` for 10%). Otherwise, will return a 404.
+         * Check if a referral code is valid.If the code is valid, responds with the referral code's discount (e.g. `0.1` for 10%). Otherwise, will return a 404 or 451 if invalid.
          */
         checkReferralCode: (qs?: BITMEX.UserCheckReferralCodeQuery) => Promise<number>;
         /**
@@ -552,5 +552,17 @@ export declare class BitmexAPI extends BitmexAbstractAPI {
          * Get your account's margin status. Send a currency of "all" to receive an array of all supported currencies.
          */
         getMargin: (qs?: BITMEX.UserMarginQuery) => Promise<BITMEX.Margin>;
+        /**
+         * @Authorized
+         * Register your communication token for mobile clients
+         */
+        communicationToken: (form: BITMEX.UserCommunicationTokenPost) => Promise<BITMEX.CommunicationToken[]>;
+    };
+    UserEvent: {
+        /**
+         * @Authorized
+         * Get your user events
+         */
+        get: (qs?: BITMEX.UserEventQuery) => Promise<BITMEX.UserEvent[]>;
     };
 }

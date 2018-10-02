@@ -258,7 +258,7 @@ export interface Liquidation {
 /**
  * Account Notifications
  */
-export interface Notification {
+export interface GlobalNotification {
     id: number;
     date: string;
     title: string;
@@ -571,6 +571,7 @@ export interface User {
     created: string;
     lastUpdated: string;
     preferences: UserPreferences;
+    restrictedEngineFields: any;
     TFAEnabled: string;
     affiliateID: string;
     pgpPubKey: string;
@@ -628,6 +629,31 @@ export interface Margin {
     grossLastValue: number;
     commission: number;
 }
+/**
+ * User communication SNS token
+ */
+export interface CommunicationToken {
+    id: string;
+    userId: number;
+    deviceToken: string;
+    channel: string;
+}
+/**
+ * User Events for auditing
+ */
+export interface UserEvent {
+    id: number;
+    type: 'apiKeyCreated' | 'deleverageExecution' | 'depositConfirmed' | 'depositPending' | 'liquidationOrderPlaced' | 'login' | 'pgpMaskedEmail' | 'pgpTestEmail' | 'passwordChanged' | 'positionStateLiquidated' | 'positionStateWarning' | 'resetPasswordConfirmed' | 'resetPasswordRequest' | 'transferCanceled' | 'transferCompleted' | 'transferReceived' | 'transferRequested' | 'twoFactorDisabled' | 'twoFactorEnabled' | 'withdrawalCanceled' | 'withdrawalCompleted' | 'withdrawalConfirmed' | 'withdrawalRequested' | 'verify';
+    status: 'success' | 'failure';
+    userId: number;
+    createdById: number;
+    ip: string;
+    geoipCountry: string;
+    geoipRegion: string;
+    geoipSubRegion: string;
+    eventMeta: any;
+    created: string;
+}
 export interface UserPreferences {
     alertOnLiquidations: boolean;
     animationsEnabled: boolean;
@@ -637,6 +663,7 @@ export interface UserPreferences {
     currency: string;
     debug: boolean;
     disableEmails: string[];
+    disablePush: string[];
     hideConfirmDialogs: string[];
     hideConnectionModal: boolean;
     hideFromLeaderboard: boolean;
@@ -1590,4 +1617,18 @@ export interface UserPut {
 }
 export interface UserMarginQuery {
     currency?: string;
+}
+export interface UserCommunicationTokenPost {
+    token: string;
+    platformAgent: string;
+}
+export interface UserEventQuery {
+    /**
+     * Number of results to fetch.
+     */
+    count?: number;
+    /**
+     * Cursor for pagination.
+     */
+    startId?: number;
 }
