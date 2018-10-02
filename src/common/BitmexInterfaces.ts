@@ -275,7 +275,7 @@ export interface Liquidation {
 /**
  * Account Notifications
  */
-export interface Notification {
+export interface GlobalNotification {
     id: number; // format: int32
     date: string; // format: date-time
     title: string;
@@ -603,6 +603,7 @@ export interface User {
     created: string; // format: date-time
     lastUpdated: string; // format: date-time
     preferences: UserPreferences; // default: {}
+    restrictedEngineFields: any; // default: {}
     TFAEnabled: string;
     affiliateID: string; // maxLength: 6
     pgpPubKey: string; // maxLength: 16384
@@ -663,6 +664,33 @@ export interface Margin {
     commission: number; // format: double
 }
 
+/**
+ * User communication SNS token
+ */
+export interface CommunicationToken {
+    id: string;
+    userId: number; // format: int32
+    deviceToken: string;
+    channel: string;
+}
+
+/**
+ * User Events for auditing
+ */
+export interface UserEvent {
+    id: number; // format: double
+    type: 'apiKeyCreated' | 'deleverageExecution' | 'depositConfirmed' | 'depositPending' | 'liquidationOrderPlaced' | 'login' | 'pgpMaskedEmail' | 'pgpTestEmail' | 'passwordChanged' | 'positionStateLiquidated' | 'positionStateWarning' | 'resetPasswordConfirmed' | 'resetPasswordRequest' | 'transferCanceled' | 'transferCompleted' | 'transferReceived' | 'transferRequested' | 'twoFactorDisabled' | 'twoFactorEnabled' | 'withdrawalCanceled' | 'withdrawalCompleted' | 'withdrawalConfirmed' | 'withdrawalRequested' | 'verify';
+    status: 'success' | 'failure';
+    userId: number; // format: double
+    createdById: number; // format: double
+    ip: string;
+    geoipCountry: string; // maxLength: 2
+    geoipRegion: string; // maxLength: 3
+    geoipSubRegion: string; // maxLength: 3
+    eventMeta: any;
+    created: string; // format: date-time
+}
+
 export interface UserPreferences {
     alertOnLiquidations: boolean;
     animationsEnabled: boolean;
@@ -672,6 +700,7 @@ export interface UserPreferences {
     currency: string;
     debug: boolean;
     disableEmails: string[];
+    disablePush: string[];
     hideConfirmDialogs: string[];
     hideConnectionModal: boolean;
     hideFromLeaderboard: boolean;
@@ -1886,4 +1915,24 @@ export interface UserPut {
 export interface UserMarginQuery {
 
     currency?: string; // DEFAULT: XBt
+}
+
+export interface UserCommunicationTokenPost {
+
+    token: string;
+
+    platformAgent: string;
+}
+
+export interface UserEventQuery {
+
+    /**
+     * Number of results to fetch.
+     */
+    count?: number; // DEFAULT: 150
+
+    /**
+     * Cursor for pagination.
+     */
+    startId?: number;
 }

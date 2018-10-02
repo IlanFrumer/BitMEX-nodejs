@@ -198,14 +198,14 @@ export class BitmexAPI extends BitmexAbstractAPI {
             this.request<BITMEX.Liquidation[]>('GET', '/liquidation', { qs }),
     };
 
-    public Notification = {
+    public GlobalNotification = {
 
         /**
          * @Authorized
-         * Get your current notifications.This is an upcoming feature and currently does not return data.
+         * Get your current GlobalNotifications.This is an upcoming feature and currently does not return data.
          */
         get: async () =>
-            this.request<BITMEX.Notification[]>('GET', '/notification', {}, true),
+            this.request<BITMEX.GlobalNotification[]>('GET', '/globalNotification', {}, true),
     };
 
     public Order = {
@@ -437,7 +437,7 @@ export class BitmexAPI extends BitmexAbstractAPI {
          * * **crossMargin**: True/false depending on whether you set cross margin on this position.
          * * **deleveragePercentile**: Indicates where your position is in the ADL queue.
          * * **rebalancedPnl**: The value of realised PNL that has transferred to your wallet for this position.
-         * * **prevRebalancedPnl**: The value of realised PNL that has transferred to your wallet for this position since the position was closed.
+         * * **prevRealisedPnl**: The value of realised PNL that has transferred to your wallet for this position since the position was closed.
          * * **currentQty**: The current position amount in contracts.
          * * **currentCost**: The current cost of the position in the settlement currency of the symbol (_currency_).
          * * **currentComm**: The current commission of the position in the settlement currency of the symbol (_currency_).
@@ -558,7 +558,7 @@ export class BitmexAPI extends BitmexAbstractAPI {
             this.request<BITMEX.Trade[]>('GET', '/trade', { qs }),
 
         /**
-         * Get previous trades in time buckets.
+         * Get previous trades in time buckets.Please note the `open` price **is equal** to the `close` price of the previous timeframe bucket.
          */
         getBucketed: async (qs: BITMEX.TradeBucketedQuery = {}) =>
             this.request<BITMEX.TradeBin[]>('GET', '/trade/bucketed', { qs }),
@@ -661,7 +661,7 @@ export class BitmexAPI extends BitmexAbstractAPI {
             this.request<BITMEX.Affiliate>('GET', '/user/affiliateStatus', {}, true),
 
         /**
-         * Check if a referral code is valid.If the code is valid, responds with the referral code's discount (e.g. `0.1` for 10%). Otherwise, will return a 404.
+         * Check if a referral code is valid.If the code is valid, responds with the referral code's discount (e.g. `0.1` for 10%). Otherwise, will return a 404 or 451 if invalid.
          */
         checkReferralCode: async (qs: BITMEX.UserCheckReferralCodeQuery = {}) =>
             this.request<number>('GET', '/user/checkReferralCode', { qs }),
@@ -713,5 +713,22 @@ export class BitmexAPI extends BitmexAbstractAPI {
          */
         getMargin: async (qs: BITMEX.UserMarginQuery = {}) =>
             this.request<BITMEX.Margin>('GET', '/user/margin', { qs }, true),
+
+        /**
+         * @Authorized
+         * Register your communication token for mobile clients
+         */
+        communicationToken: async (form: BITMEX.UserCommunicationTokenPost) =>
+            this.request<BITMEX.CommunicationToken[]>('POST', '/user/communicationToken', { form }, true),
+    };
+
+    public UserEvent = {
+
+        /**
+         * @Authorized
+         * Get your user events
+         */
+        get: async (qs: BITMEX.UserEventQuery = {}) =>
+            this.request<BITMEX.UserEvent[]>('GET', '/userEvent', { qs }, true),
     };
 }
