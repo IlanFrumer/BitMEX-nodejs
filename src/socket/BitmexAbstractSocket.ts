@@ -18,7 +18,7 @@ export abstract class BitmexAbstractSocket {
 
     private subscribers = new Map<Subscriber<any>, string>();
     private subscriptions = new Map<string, 'unsubscribed' | 'subscribed' | 'pending'>();
-    private send: (message: object | 'ping' | '"help"') => void;
+    private send: (message: object | 'ping' | '"help"') => boolean;
 
     constructor(options: BitmexOptions = {}) {
 

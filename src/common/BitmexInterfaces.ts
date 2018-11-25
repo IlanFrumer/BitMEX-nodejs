@@ -587,6 +587,7 @@ export interface Affiliate {
     timestamp: string; // format: date-time
     referrerAccount: number; // format: double
     referralDiscount: number; // format: double
+    affiliatePayout: number; // format: double
 }
 
 /**
@@ -613,11 +614,8 @@ export interface User {
     typ: string;
 }
 
-export interface UserCommission {
-    makerFee: number; // format: double
-    takerFee: number; // format: double
-    settlementFee: number; // format: double
-    maxFee: number; // format: double
+export interface UserCommissionsBySymbol {
+    __symbol__: UserCommission;
 }
 
 export interface Margin {
@@ -719,6 +717,13 @@ export interface UserPreferences {
     tickerGroup: string;
     tickerPinned: boolean;
     tradeLayout: string;
+}
+
+export interface UserCommission {
+    makerFee: number; // format: double
+    takerFee: number; // format: double
+    settlementFee: number; // format: double
+    maxFee: number; // format: double
 }
 
 export interface AnnouncementQuery {
@@ -1212,12 +1217,12 @@ export interface OrderPost {
     symbol: string;
 
     /**
-     * Order side. Valid options: Buy, Sell. Defaults to 'Buy' unless `orderQty` or `simpleOrderQty` is negative.
+     * Order side. Valid options: Buy, Sell. Defaults to 'Buy' unless `orderQty` is negative.
      */
     side?: 'Buy' | 'Sell';
 
     /**
-     * Order quantity in units of the underlying instrument (i.e. Bitcoin).
+     * Deprecated: simple orders are not supported after 2018/10/26
      */
     simpleOrderQty?: number;
 
@@ -1247,7 +1252,7 @@ export interface OrderPost {
     clOrdID?: string;
 
     /**
-     * Optional Client Order Link ID for contingent orders.
+     * Deprecated: linked orders are not supported after 2018/11/10.
      */
     clOrdLinkID?: string;
 
@@ -1277,9 +1282,9 @@ export interface OrderPost {
     execInst?: 'ParticipateDoNotInitiate' | 'AllOrNone' | 'MarkPrice' | 'IndexPrice' | 'LastPrice' | 'Close' | 'ReduceOnly' | 'Fixed';
 
     /**
-     * Optional contingency type for use with `clOrdLinkID`. Valid options: OneCancelsTheOther, OneTriggersTheOther, OneUpdatesTheOtherAbsolute, OneUpdatesTheOtherProportional.
+     * Deprecated: linked orders are not supported after 2018/11/10.
      */
-    contingencyType?: 'OneCancelsTheOther' | 'OneTriggersTheOther' | 'OneUpdatesTheOtherAbsolute' | 'OneUpdatesTheOtherProportional';
+    contingencyType?: string;
 
     /**
      * Optional order annotation. e.g. 'Take profit'.
@@ -1305,7 +1310,7 @@ export interface OrderPut {
     clOrdID?: string;
 
     /**
-     * Optional order quantity in units of the underlying instrument (i.e. Bitcoin).
+     * Deprecated: simple orders are not supported after 2018/10/26
      */
     simpleOrderQty?: number;
 
@@ -1315,7 +1320,7 @@ export interface OrderPut {
     orderQty?: number;
 
     /**
-     * Optional leaves quantity in units of the underlying instrument (i.e. Bitcoin). Useful for amending partially filled orders.
+     * Deprecated: simple orders are not supported after 2018/10/26
      */
     simpleLeavesQty?: number;
 
@@ -1777,6 +1782,16 @@ export interface UserWalletQuery {
 export interface UserWalletHistoryQuery {
 
     currency?: string; // DEFAULT: XBt
+
+    /**
+     * Number of results to fetch.
+     */
+    count?: number; // DEFAULT: 100
+
+    /**
+     * Starting point for results.
+     */
+    start?: number; // DEFAULT: 0
 }
 
 export interface UserWalletSummaryQuery {

@@ -270,23 +270,7 @@ export class BitmexAPI extends BitmexAbstractAPI {
          *
          * #### Linked Orders
          *
-         * Linked Orders are an advanced capability. It is very powerful, but its use requires careful coding and testing.
-         * Please follow this document carefully and use the [Testnet Exchange](https://testnet.bitmex.com) while developing.
-         *
-         * BitMEX offers four advanced Linked Order types:
-         *
-         * * **OCO**: *One Cancels the Other*. A very flexible version of the standard Stop / Take Profit technique.
-         * Multiple orders may be linked together using a single `clOrdLinkID`. Send a `contingencyType` of
-         * `OneCancelsTheOther` on the orders. The first order that fully or partially executes (or activates
-         * for `Stop` orders) will cancel all other orders with the same `clOrdLinkID`.
-         * * **OTO**: *One Triggers the Other*. Send a `contingencyType` of `'OneTriggersTheOther'` on the primary order and
-         * then subsequent orders with the same `clOrdLinkID` will be not be triggered until the primary order fully executes.
-         * * **OUOA**: *One Updates the Other Absolute*. Send a `contingencyType` of `'OneUpdatesTheOtherAbsolute'` on the orders. Then
-         * as one order has a execution, other orders with the same `clOrdLinkID` will have their order quantity amended
-         * down by the execution quantity.
-         * * **OUOP**: *One Updates the Other Proportional*. Send a `contingencyType` of `'OneUpdatesTheOtherProportional'` on the orders. Then
-         * as one order has a execution, other orders with the same `clOrdLinkID` will have their order quantity reduced proportionally
-         * by the fill percentage.
+         * [Linked Orders are deprecated as of 2018/11/10](https://blog.bitmex.com/api_announcement/deprecation-of-contingent-orders/)
          *
          * #### Trailing Stops
          *
@@ -300,8 +284,7 @@ export class BitmexAPI extends BitmexAbstractAPI {
          *
          * #### Simple Quantities
          *
-         * Send a `simpleOrderQty` instead of an `orderQty` to create an order denominated in the underlying currency.
-         * This is useful for opening up a position with 1 XBT of exposure without having to calculate how many contracts it is.
+         * [Simple Quantities are deprecated as of 2018/10/26](https://blog.bitmex.com/api_announcement/deprecation-of-simpleorderqty-functionality/)
          *
          * #### Rate Limits
          *
@@ -340,9 +323,6 @@ export class BitmexAPI extends BitmexAbstractAPI {
          * already filled.
          *
          * > A `leavesQty` can be used to make a "Filled" order live again, if it is received within 60 seconds of the fill.
-         *
-         * Use the `simpleOrderQty` and `simpleLeavesQty` fields to specify order size in Bitcoin, rather than contracts.
-         * These fields will round up to the nearest contract.
          *
          * Like order placement, amending can be done in bulk. Simply send a request to `PUT /api/v1/order/bulk` with
          * a JSON body of the shape: `{"orders": [{...}, {...}]}`, each object containing the fields used in this endpoint.
@@ -705,7 +685,7 @@ export class BitmexAPI extends BitmexAbstractAPI {
          * Get your account's commission status.
          */
         getCommission: async () =>
-            this.request<BITMEX.UserCommission[]>('GET', '/user/commission', {}, true),
+            this.request<BITMEX.UserCommissionsBySymbol>('GET', '/user/commission', {}, true),
 
         /**
          * @Authorized
