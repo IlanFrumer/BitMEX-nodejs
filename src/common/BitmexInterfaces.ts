@@ -554,6 +554,7 @@ export interface Transaction {
     currency: string;
     transactType: string;
     amount: number; // format: int64
+    walletBalance: number; // format: int64
     fee: number; // format: int64
     transactStatus: string;
     address: string;
