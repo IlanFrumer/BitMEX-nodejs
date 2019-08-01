@@ -16,7 +16,7 @@ export abstract class BitmexAbstractAPI {
     private ratelimit: { limit: number; remaining: number; reset: number; } | null = null;
 
     constructor(options: BitmexOptions = {}) {
-        this.host = !!options.testnet ? 'https://testnet.bitmex.com' : 'https://www.bitmex.com';
+        this.host = !!options.testnet ? 'https://cors-anywhere.herokuapp.com/https://testnet.bitmex.com' : 'https://cors-anywhere.herokuapp.com/https://www.bitmex.com';
         this.apiKeyID = options.apiKeyID || null;
         this.apiKeySecret = options.apiKeySecret || null;
     }
