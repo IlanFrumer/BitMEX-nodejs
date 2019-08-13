@@ -14,7 +14,7 @@ function getAuthHeaders({ apiKeyID, apiKeySecret, opts, method, path }) {
     }
     const data = opts.form ? querystring_1.stringify(opts.form) : '';
     const nonce = generateNonce();
-    const signature = crypto_1.createHmac('sha256', apiKeySecret).update(method + path + nonce + data).digest('hex');
+    const signature = crypto_1.createHmac('sha256', apiKeySecret).update(method + path.substring(path.indexOf("/api")) + nonce + data).digest('hex');
     return {
         'api-expires': nonce,
         'api-key': apiKeyID,
