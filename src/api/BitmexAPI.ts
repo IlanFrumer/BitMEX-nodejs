@@ -26,38 +26,10 @@ export class BitmexAPI extends BitmexAbstractAPI {
 
         /**
          * @Authorized
-         * Create a new API Key.API Keys can only be created via the frontend.
-         */
-        new: async (form: BITMEX.ApiKeyPost = {}) =>
-            this.request<BITMEX.APIKey>('POST', '/apiKey', { form }, true),
-
-        /**
-         * @Authorized
          * Get your API Keys.
          */
         get: async (qs: BITMEX.ApiKeyQuery = {}) =>
             this.request<BITMEX.APIKey[]>('GET', '/apiKey', { qs }, true),
-
-        /**
-         * @Authorized
-         * Remove an API Key.
-         */
-        remove: async (form: BITMEX.ApiKeyDelete) =>
-            this.request<{ success: boolean; }>('DELETE', '/apiKey', { form }, true),
-
-        /**
-         * @Authorized
-         * Disable an API Key.
-         */
-        disable: async (form: BITMEX.ApiKeyDisablePost) =>
-            this.request<BITMEX.APIKey>('POST', '/apiKey/disable', { form }, true),
-
-        /**
-         * @Authorized
-         * Enable an API Key.
-         */
-        enable: async (form: BITMEX.ApiKeyEnablePost) =>
-            this.request<BITMEX.APIKey>('POST', '/apiKey/enable', { form }, true),
     };
 
     public Chat = {
@@ -234,11 +206,6 @@ export class BitmexAPI extends BitmexAbstractAPI {
          * * **Limit**: The default order type. Specify an `orderQty` and `price`.
          * * **Market**: A traditional Market order. A Market order will execute until filled or your bankruptcy price is reached, at
          * which point it will cancel.
-         * * **MarketWithLeftOverAsLimit**: A market order that, after eating through the order book as far as
-         * permitted by available margin, will become a limit order. The difference between this type and `Market` only
-         * affects the behavior in thin books. Upon reaching the deepest possible price, if there is quantity left over,
-         * a `Market` order will cancel the remaining quantity. `MarketWithLeftOverAsLimit` will keep the remaining
-         * quantity in the books as a `Limit`.
          * * **Stop**: A Stop Market order. Specify an `orderQty` and `stopPx`. When the `stopPx` is reached, the order will be entered
          * into the book.
          * * On sell orders, the order will trigger if the triggering price is lower than the `stopPx`. On buys, higher.
@@ -339,7 +306,7 @@ export class BitmexAPI extends BitmexAbstractAPI {
 
         /**
          * @Authorized
-         * Create multiple new orders for the same symbol.This endpoint is used for placing bulk orders. Valid order types are Market, Limit, Stop, StopLimit, MarketIfTouched, LimitIfTouched, MarketWithLeftOverAsLimit, and Pegged.
+         * Create multiple new orders for the same symbol.This endpoint is used for placing bulk orders. Valid order types are Market, Limit, Stop, StopLimit, MarketIfTouched, LimitIfTouched, and Pegged.
          *
          * Each individual order object in the array should have the same properties as an individual POST /order call.
          *
@@ -476,7 +443,7 @@ export class BitmexAPI extends BitmexAbstractAPI {
             this.request<BITMEX.Quote[]>('GET', '/quote', { qs }),
 
         /**
-         * Get previous quotes in time buckets.
+         * Get previous quotes in time buckets.Timestamps returned by our bucketed endpoints are the **end** of the period, indicating when the bucket was written to disk. Some other common systems use the timestamp as the beginning of the period. Please be aware of this when using this endpoint.
          */
         getBucketed: async (qs: BITMEX.QuoteBucketedQuery = {}) =>
             this.request<BITMEX.Quote[]>('GET', '/quote/bucketed', { qs }),
@@ -538,7 +505,9 @@ export class BitmexAPI extends BitmexAbstractAPI {
             this.request<BITMEX.Trade[]>('GET', '/trade', { qs }),
 
         /**
-         * Get previous trades in time buckets.Please note the `open` price **is equal** to the `close` price of the previous timeframe bucket.
+         * Get previous trades in time buckets.Timestamps returned by our bucketed endpoints are the **end** of the period, indicating when the bucket was written to disk. Some other common systems use the timestamp as the beginning of the period. Please be aware of this when using this endpoint.
+         *
+         * Also note the `open` price is equal to the `close` price of the previous timeframe bucket.
          */
         getBucketed: async (qs: BITMEX.TradeBucketedQuery = {}) =>
             this.request<BITMEX.TradeBin[]>('GET', '/trade/bucketed', { qs }),
@@ -589,7 +558,7 @@ export class BitmexAPI extends BitmexAbstractAPI {
 
         /**
          * @Authorized
-         * Request a withdrawal to an external wallet.This will send a confirmation email to the email address on record, unless requested via an API Key with the `withdraw` permission.
+         * Request a withdrawal to an external wallet.This will send a confirmation email to the email address on record.
          */
         requestWithdrawal: async (form: BITMEX.UserRequestWithdrawalPost) =>
             this.request<BITMEX.Transaction>('POST', '/user/requestWithdrawal', { form }, true),
@@ -605,27 +574,6 @@ export class BitmexAPI extends BitmexAbstractAPI {
          */
         confirmWithdrawal: async (form: BITMEX.UserConfirmWithdrawalPost) =>
             this.request<BITMEX.Transaction>('POST', '/user/confirmWithdrawal', { form }),
-
-        /**
-         * @Authorized
-         * Get secret key for setting up two-factor auth.Use /confirmEnableTFA directly for Yubikeys. This fails if TFA is already enabled.
-         */
-        requestEnableTFA: async (form: BITMEX.UserRequestEnableTFAPost = {}) =>
-            this.request<boolean>('POST', '/user/requestEnableTFA', { form }, true),
-
-        /**
-         * @Authorized
-         * Confirm two-factor auth for this account. If using a Yubikey, simply send a token to this endpoint.
-         */
-        confirmEnableTFA: async (form: BITMEX.UserConfirmEnableTFAPost) =>
-            this.request<boolean>('POST', '/user/confirmEnableTFA', { form }, true),
-
-        /**
-         * @Authorized
-         * Disable two-factor auth for this account.
-         */
-        disableTFA: async (form: BITMEX.UserDisableTFAPost) =>
-            this.request<boolean>('POST', '/user/disableTFA', { form }, true),
 
         /**
          * Confirm your email address with a token.
@@ -654,13 +602,6 @@ export class BitmexAPI extends BitmexAbstractAPI {
 
         /**
          * @Authorized
-         * Log all systems out of BitMEX. This will revoke all of your account's access tokens, logging you out on all devices.
-         */
-        logoutAll: async () =>
-            this.request<number>('POST', '/user/logoutAll', {}, true),
-
-        /**
-         * @Authorized
          * Save user preferences.
          */
         savePreferences: async (form: BITMEX.UserPreferencesPost) =>
@@ -672,13 +613,6 @@ export class BitmexAPI extends BitmexAbstractAPI {
          */
         get: async () =>
             this.request<BITMEX.User>('GET', '/user', {}, true),
-
-        /**
-         * @Authorized
-         * Update your password, name, and other attributes.
-         */
-        update: async (form: BITMEX.UserPut = {}) =>
-            this.request<BITMEX.User>('PUT', '/user', { form }, true),
 
         /**
          * @Authorized

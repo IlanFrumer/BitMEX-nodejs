@@ -642,9 +642,7 @@ export interface CommunicationToken {
 export interface UserEvent {
     id: number;
     type: 'apiKeyCreated' | 'deleverageExecution' | 'depositConfirmed' | 'depositPending' | 'banZeroVolumeApiUser' | 'liquidationOrderPlaced' | 'login' | 'pgpMaskedEmail' | 'pgpTestEmail' | 'passwordChanged' | 'positionStateLiquidated' | 'positionStateWarning' | 'resetPasswordConfirmed' | 'resetPasswordRequest' | 'transferCanceled' | 'transferCompleted' | 'transferReceived' | 'transferRequested' | 'twoFactorDisabled' | 'twoFactorEnabled' | 'withdrawalCanceled' | 'withdrawalCompleted' | 'withdrawalConfirmed' | 'withdrawalRequested' | 'verify';
-    eventType: 'apiKeyCreated' | 'deleverageExecution' | 'depositConfirmed' | 'depositPending' | 'banZeroVolumeApiUser' | 'liquidationOrderPlaced' | 'login' | 'pgpMaskedEmail' | 'pgpTestEmail' | 'passwordChanged' | 'positionStateLiquidated' | 'positionStateWarning' | 'resetPasswordConfirmed' | 'resetPasswordRequest' | 'transferCanceled' | 'transferCompleted' | 'transferReceived' | 'transferRequested' | 'twoFactorDisabled' | 'twoFactorEnabled' | 'withdrawalCanceled' | 'withdrawalCompleted' | 'withdrawalConfirmed' | 'withdrawalRequested' | 'verify';
     status: 'success' | 'failure';
-    eventStatus: 'success' | 'failure';
     userId: number;
     createdById: number;
     ip: string;
@@ -695,51 +693,11 @@ export interface AnnouncementQuery {
      */
     columns?: string;
 }
-export interface ApiKeyPost {
-    /**
-     * Key name. This name is for reference only.
-     */
-    name?: string;
-    /**
-     * CIDR block to restrict this key to. To restrict to a single address, append "/32", e.g. 207.39.29.22/32. Leave blank or set to 0.0.0.0/0 to allow all IPs. Only one block may be set. <a href="http://software77.net/cidr-101.html">More on CIDR blocks</a>
-     */
-    cidr?: string;
-    /**
-     * Key Permissions. All keys can read margin and position data. Additional permissions must be added. Available: ["order", "orderCancel", "withdraw"].
-     */
-    permissions?: string;
-    /**
-     * Set to true to enable this key on creation. Otherwise, it must be explicitly enabled via /apiKey/enable.
-     */
-    enabled?: boolean;
-    /**
-     * OTP Token (YubiKey, Google Authenticator)
-     */
-    token?: string;
-}
 export interface ApiKeyQuery {
     /**
      * If true, will sort results newest first.
      */
     reverse?: boolean;
-}
-export interface ApiKeyDelete {
-    /**
-     * API Key ID (public component).
-     */
-    apiKeyID: string;
-}
-export interface ApiKeyDisablePost {
-    /**
-     * API Key ID (public component).
-     */
-    apiKeyID: string;
-}
-export interface ApiKeyEnablePost {
-    /**
-     * API Key ID (public component).
-     */
-    apiKeyID: string;
 }
 export interface ChatQuery {
     /**
@@ -1120,11 +1078,11 @@ export interface OrderPost {
      */
     pegPriceType?: 'LastPeg' | 'MidPricePeg' | 'MarketPeg' | 'PrimaryPeg' | 'TrailingStopPeg';
     /**
-     * Order type. Valid options: Market, Limit, Stop, StopLimit, MarketIfTouched, LimitIfTouched, MarketWithLeftOverAsLimit, Pegged. Defaults to 'Limit' when `price` is specified. Defaults to 'Stop' when `stopPx` is specified. Defaults to 'StopLimit' when `price` and `stopPx` are specified.
+     * Order type. Valid options: Market, Limit, Stop, StopLimit, MarketIfTouched, LimitIfTouched, Pegged. Defaults to 'Limit' when `price` is specified. Defaults to 'Stop' when `stopPx` is specified. Defaults to 'StopLimit' when `price` and `stopPx` are specified.
      */
-    ordType?: 'Market' | 'Limit' | 'Stop' | 'StopLimit' | 'MarketIfTouched' | 'LimitIfTouched' | 'MarketWithLeftOverAsLimit' | 'Pegged';
+    ordType?: 'Market' | 'Limit' | 'Stop' | 'StopLimit' | 'MarketIfTouched' | 'LimitIfTouched' | 'Pegged';
     /**
-     * Time in force. Valid options: Day, GoodTillCancel, ImmediateOrCancel, FillOrKill. Defaults to 'GoodTillCancel' for 'Limit', 'StopLimit', 'LimitIfTouched', and 'MarketWithLeftOverAsLimit' orders.
+     * Time in force. Valid options: Day, GoodTillCancel, ImmediateOrCancel, FillOrKill. Defaults to 'GoodTillCancel' for 'Limit', 'StopLimit', and 'LimitIfTouched' orders.
      */
     timeInForce?: 'Day' | 'GoodTillCancel' | 'ImmediateOrCancel' | 'FillOrKill';
     /**
@@ -1566,37 +1524,15 @@ export interface UserRequestWithdrawalPost {
      * Network fee for Bitcoin withdrawals. If not specified, a default value will be calculated based on Bitcoin network conditions. You will have a chance to confirm this via email.
      */
     fee?: number;
+    /**
+     * Optional annotation, e.g. 'Transfer to home wallet'.
+     */
+    text?: string;
 }
 export interface UserCancelWithdrawalPost {
     token: string;
 }
 export interface UserConfirmWithdrawalPost {
-    token: string;
-}
-export interface UserRequestEnableTFAPost {
-    /**
-     * Two-factor auth type. Supported types: 'GA' (Google Authenticator)
-     */
-    type?: string;
-}
-export interface UserConfirmEnableTFAPost {
-    /**
-     * Two-factor auth type. Supported types: 'GA' (Google Authenticator), 'Yubikey'
-     */
-    type?: string;
-    /**
-     * Token from your selected TFA type.
-     */
-    token: string;
-}
-export interface UserDisableTFAPost {
-    /**
-     * Two-factor auth type. Supported types: 'GA' (Google Authenticator)
-     */
-    type?: string;
-    /**
-     * Token from your selected TFA type.
-     */
     token: string;
 }
 export interface UserConfirmEmailPost {
@@ -1611,23 +1547,6 @@ export interface UserPreferencesPost {
      * If true, will overwrite all existing preferences.
      */
     overwrite?: boolean;
-}
-export interface UserPut {
-    oldPassword?: string;
-    newPassword?: string;
-    newPasswordConfirm?: string;
-    /**
-     * Username can only be set once. To reset, email support.
-     */
-    username?: string;
-    /**
-     * Country of residence.
-     */
-    country?: string;
-    /**
-     * PGP Public Key. If specified, automated emails will be sentwith this key.
-     */
-    pgpPubKey?: string;
 }
 export interface UserMarginQuery {
     currency?: string;

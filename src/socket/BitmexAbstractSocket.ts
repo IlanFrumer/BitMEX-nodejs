@@ -56,8 +56,8 @@ export abstract class BitmexAbstractSocket {
 
     private syncSubscribers() {
         const subscribers = new Set(this.subscribers.values());
-        const toSubscribe = new Set();
-        const toUnsubscribe = new Set();
+        const toSubscribe = new Set<string>();
+        const toUnsubscribe = new Set<string>();
 
         // Create new subscriptions
         for (const subscription of subscribers) {
