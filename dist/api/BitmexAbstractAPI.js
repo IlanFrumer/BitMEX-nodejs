@@ -7,7 +7,9 @@ const BitmexAuth_1 = require("../common/BitmexAuth");
 class BitmexAbstractAPI {
     constructor(options = {}) {
         this.ratelimit = null;
-        this.host = !!options.testnet ? 'https://testnet.bitmex.com' : 'https://www.bitmex.com';
+        const proxy = options.proxy || '';
+        this.host = !!options.testnet ?
+            `${proxy}https://testnet.bitmex.com` : `${proxy}https://www.bitmex.com`;
         this.apiKeyID = options.apiKeyID || null;
         this.apiKeySecret = options.apiKeySecret || null;
     }
