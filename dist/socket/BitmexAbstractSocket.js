@@ -6,11 +6,10 @@ const ws_1 = tslib_1.__importDefault(require("ws"));
 const BitmexAuth_1 = require("../common/BitmexAuth");
 const BitmexObservable_1 = require("./BitmexObservable");
 const debug = require('debug')('bitmex-node');
-const PING = 10 * 1000;
 // TODO
 // {"op": "cancelAllAfter", "args": 60000}
 class BitmexAbstractSocket {
-    constructor(options = {}) {
+    constructor(options = {}, pingWaitTime, closeCallback) {
         this.tableSubject$ = new Rx_1.Subject();
         this.subscribers = new Map();
         this.subscriptions = new Map();
@@ -18,22 +17,61 @@ class BitmexAbstractSocket {
         if (options.apiKeyID && options.apiKeySecret) {
             endpoint += `?${BitmexAuth_1.getWSAuthQuery(options.apiKeyID, options.apiKeySecret)}`;
         }
+        this.webSocket = this.createWebSocket(endpoint);
+        this.pingWaitTime = pingWaitTime || 10 * 1000;
+        this.closeCallback = closeCallback;
+    }
+    close() {
+        if (this.webSocket.readyState !== ws_1.default.CLOSED && this.webSocket.readyState !== ws_1.default.CLOSING) {
+            this.webSocket.close();
+        }
+    }
+    createObservable(table, opts = {}) {
+        const symbol = opts.symbol;
+        const filterKey = opts.filterKey;
+        let subscription;
+        let filterFn;
+        if (typeof opts.symbol !== 'undefined') {
+            subscription = table + ':' + symbol;
+            filterFn = (d) => d.data.every((e) => e['symbol'] === symbol);
+        }
+        else if (typeof opts.filterKey !== 'undefined') {
+            subscription = table + ':' + filterKey;
+            filterFn = (d) => d.data.every((e) => e[d.filterKey] === filterKey);
+        }
+        else {
+            subscription = table;
+            filterFn = () => true;
+        }
+        return new BitmexObservable_1.BitmexObservable(observer => {
+            const sub$ = this.tableSubject$
+                .filter(d => d.table === table)
+                .filter(filterFn)
+                .subscribe(d => observer.next(d));
+            this.subscribers.set(observer, subscription);
+            this.syncSubscribers();
+            return () => {
+                sub$.unsubscribe();
+                this.subscribers.delete(observer);
+                this.syncSubscribers();
+            };
+        });
+    }
+    createWebSocket(endpoint) {
         let ping;
         const ws = new ws_1.default(endpoint);
-        this.send = (message) => {
-            if (ws.readyState !== ws_1.default.OPEN) {
-                return false;
-            }
-            else {
-                const value = typeof message === 'string' ? message : JSON.stringify(message);
-                ws.send(value);
-                return true;
-            }
+        const handlePingTimeout = () => {
+            this.send('ping');
+            ping = undefined;
         };
         ws.on('open', () => this.syncSubscribers());
         ws.on('message', (message) => {
-            clearTimeout(ping);
-            ping = setTimeout(() => this.send('ping'), PING);
+            if (ping) {
+                ping.refresh();
+            }
+            else {
+                ping = setTimeout(handlePingTimeout, this.pingWaitTime);
+            }
             if (message === 'pong') {
                 return;
             }
@@ -41,7 +79,24 @@ class BitmexAbstractSocket {
             this.messageHandler(json);
         });
         ws.on('error', (err) => debug('error %o', err));
+        ws.on('close', (code) => {
+            if (this.closeCallback) {
+                this.closeCallback(code);
+            }
+        });
+        return ws;
     }
+    send(message) {
+        if (this.webSocket.readyState !== ws_1.default.OPEN) {
+            return false;
+        }
+        else {
+            const value = typeof message === 'string' ? message : JSON.stringify(message);
+            this.webSocket.send(value);
+            return true;
+        }
+    }
+    ;
     syncSubscribers() {
         const subscribers = new Set(this.subscribers.values());
         const toSubscribe = new Set();
@@ -70,38 +125,6 @@ class BitmexAbstractSocket {
             this.send({ 'op': 'unsubscribe', 'args': Array.from(toUnsubscribe) }) &&
                 toUnsubscribe.forEach(subscription => this.subscriptions.set(subscription, 'pending'));
         }
-    }
-    createObservable(table, opts = {}) {
-        const symbol = opts.symbol;
-        const filterKey = opts.filterKey;
-        let subscription;
-        let filterFn;
-        if (typeof opts.symbol !== 'undefined') {
-            subscription = table + ':' + symbol;
-            filterFn = (d) => d.data.every((e) => e['symbol'] === symbol);
-        }
-        else if (typeof opts.filterKey !== 'undefined') {
-            subscription = table + ':' + filterKey;
-            filterFn = (d) => d.data.every((e) => e[d.filterKey] === filterKey);
-        }
-        else {
-            subscription = table;
-            filterFn = () => true;
-        }
-        const observable = new BitmexObservable_1.BitmexObservable(observer => {
-            const sub$ = this.tableSubject$
-                .filter(d => d.table === table)
-                .filter(filterFn)
-                .subscribe(d => observer.next(d));
-            this.subscribers.set(observer, subscription);
-            this.syncSubscribers();
-            return () => {
-                sub$.unsubscribe();
-                this.subscribers.delete(observer);
-                this.syncSubscribers();
-            };
-        });
-        return observable;
     }
     messageHandler(data) {
         if (data.table) {
