@@ -615,6 +615,9 @@ export interface User {
     typ: string;
 }
 
+export interface UserCommissionsBySymbol {
+}
+
 export interface Margin {
     account: number; // format: int64
     currency: string;

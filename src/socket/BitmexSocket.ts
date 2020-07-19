@@ -8,6 +8,15 @@ export interface OrderBook {
     bids: [number, number][];
 }
 
+export interface Quote {
+    timestamp: string;
+    symbol: string;
+    bidSize: number;
+    bidPrice: number;
+    askPrice: number;
+    askSize: number;
+}
+
 export class BitmexSocket extends BitmexAbstractSocket {
 
     /*
@@ -68,27 +77,27 @@ export class BitmexSocket extends BitmexAbstractSocket {
     /*
      * Top level of the book
      */
-    quote (symbol?: string) { return this.createObservable<BITMEX.Quote>('quote', { symbol }); }
+    quote (symbol?: string) { return this.createObservable<Quote>('quote', { symbol }); }
 
     /*
      * 1-minute quote bins
      */
-    quoteBin1m (symbol?: string) { return this.createObservable<BITMEX.Quote>('quoteBin1m', { symbol }); }
+    quoteBin1m (symbol?: string) { return this.createObservable<Quote>('quoteBin1m', { symbol }); }
 
     /*
      * 5-minute quote bins
      */
-    quoteBin5m (symbol?: string) { return this.createObservable<BITMEX.Quote>('quoteBin5m', { symbol }); }
+    quoteBin5m (symbol?: string) { return this.createObservable<Quote>('quoteBin5m', { symbol }); }
 
     /*
      * 1-hour quote bins
      */
-    quoteBin1h (symbol?: string) { return this.createObservable<BITMEX.Quote>('quoteBin1h', { symbol }); }
+    quoteBin1h (symbol?: string) { return this.createObservable<Quote>('quoteBin1h', { symbol }); }
 
     /*
      * 1-day quote bins
      */
-    quoteBin1d (symbol?: string) { return this.createObservable<BITMEX.Quote>('quoteBin1d', { symbol }); }
+    quoteBin1d (symbol?: string) { return this.createObservable<Quote>('quoteBin1d', { symbol }); }
 
     /*
      * Settlements
