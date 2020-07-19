@@ -6,6 +6,14 @@ export interface OrderBook {
     asks: [number, number][];
     bids: [number, number][];
 }
+export interface Quote {
+    timestamp: string;
+    symbol: string;
+    bidSize: number;
+    bidPrice: number;
+    askPrice: number;
+    askSize: number;
+}
 export declare class BitmexSocket extends BitmexAbstractSocket {
     announcement(): import("./BitmexObservable").BitmexObservable<BITMEX.Announcement, import("./ITableMessage").ITableMessage & {
         data: BITMEX.Announcement[];
@@ -40,20 +48,20 @@ export declare class BitmexSocket extends BitmexAbstractSocket {
     publicNotifications(): import("./BitmexObservable").BitmexObservable<any, import("./ITableMessage").ITableMessage & {
         data: any[];
     }>;
-    quote(symbol?: string): import("./BitmexObservable").BitmexObservable<BITMEX.Quote, import("./ITableMessage").ITableMessage & {
-        data: BITMEX.Quote[];
+    quote(symbol?: string): import("./BitmexObservable").BitmexObservable<Quote, import("./ITableMessage").ITableMessage & {
+        data: Quote[];
     }>;
-    quoteBin1m(symbol?: string): import("./BitmexObservable").BitmexObservable<BITMEX.Quote, import("./ITableMessage").ITableMessage & {
-        data: BITMEX.Quote[];
+    quoteBin1m(symbol?: string): import("./BitmexObservable").BitmexObservable<Quote, import("./ITableMessage").ITableMessage & {
+        data: Quote[];
     }>;
-    quoteBin5m(symbol?: string): import("./BitmexObservable").BitmexObservable<BITMEX.Quote, import("./ITableMessage").ITableMessage & {
-        data: BITMEX.Quote[];
+    quoteBin5m(symbol?: string): import("./BitmexObservable").BitmexObservable<Quote, import("./ITableMessage").ITableMessage & {
+        data: Quote[];
     }>;
-    quoteBin1h(symbol?: string): import("./BitmexObservable").BitmexObservable<BITMEX.Quote, import("./ITableMessage").ITableMessage & {
-        data: BITMEX.Quote[];
+    quoteBin1h(symbol?: string): import("./BitmexObservable").BitmexObservable<Quote, import("./ITableMessage").ITableMessage & {
+        data: Quote[];
     }>;
-    quoteBin1d(symbol?: string): import("./BitmexObservable").BitmexObservable<BITMEX.Quote, import("./ITableMessage").ITableMessage & {
-        data: BITMEX.Quote[];
+    quoteBin1d(symbol?: string): import("./BitmexObservable").BitmexObservable<Quote, import("./ITableMessage").ITableMessage & {
+        data: Quote[];
     }>;
     settlement(symbol?: string): import("./BitmexObservable").BitmexObservable<BITMEX.Settlement, import("./ITableMessage").ITableMessage & {
         data: BITMEX.Settlement[];

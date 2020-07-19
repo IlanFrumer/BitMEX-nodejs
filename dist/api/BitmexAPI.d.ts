@@ -82,7 +82,7 @@ export declare class BitmexAPI extends BitmexAbstractAPI {
          */
         getActiveAndIndices: () => Promise<BITMEX.Instrument[]>;
         /**
-         * Return all active contract series and interval pairs.This endpoint is useful for determining which pairs are live. It returns two arrays of   strings. The first is intervals, such as `["XBT:perpetual", "XBT:monthly", "XBT:quarterly", "ETH:monthly", ...]`. These identifiers are usable in any query's `symbol` param. The second array is the current resolution of these intervals. Results are mapped at the same index.
+         * Return all active contract series and interval pairs.This endpoint is useful for determining which pairs are live. It returns two arrays of   strings. The first is intervals, such as `["XBT:perpetual", "XBT:quarterly", "XBT:biquarterly", "ETH:quarterly", ...]`. These identifiers are usable in any query's `symbol` param. The second array is the current resolution of these intervals. Results are mapped at the same index.
          */
         getActiveIntervals: () => Promise<BITMEX.InstrumentInterval>;
         /**
@@ -147,36 +147,36 @@ export declare class BitmexAPI extends BitmexAbstractAPI {
          *
          * These are the valid `ordType`s:
          *
-         * * **Limit**: The default order type. Specify an `orderQty` and `price`.
-         * * **Market**: A traditional Market order. A Market order will execute until filled or your bankruptcy price is reached, at
+         * - **Limit**: The default order type. Specify an `orderQty` and `price`.
+         * - **Market**: A traditional Market order. A Market order will execute until filled or your bankruptcy price is reached, at
          * which point it will cancel.
-         * * **Stop**: A Stop Market order. Specify an `orderQty` and `stopPx`. When the `stopPx` is reached, the order will be entered
+         * - **Stop**: A Stop Market order. Specify an `orderQty` and `stopPx`. When the `stopPx` is reached, the order will be entered
          * into the book.
-         * * On sell orders, the order will trigger if the triggering price is lower than the `stopPx`. On buys, higher.
-         * * Note: Stop orders do not consume margin until triggered. Be sure that the required margin is available in your
+         * - On sell orders, the order will trigger if the triggering price is lower than the `stopPx`. On buys, higher.
+         * - Note: Stop orders do not consume margin until triggered. Be sure that the required margin is available in your
          * account so that it may trigger fully.
-         * * `Close` Stops don't require an `orderQty`. See Execution Instructions below.
-         * * **StopLimit**: Like a Stop Market, but enters a Limit order instead of a Market order. Specify an `orderQty`, `stopPx`,
+         * - `Close` Stops don't require an `orderQty`. See Execution Instructions below.
+         * - **StopLimit**: Like a Stop Market, but enters a Limit order instead of a Market order. Specify an `orderQty`, `stopPx`,
          * and `price`.
-         * * **MarketIfTouched**: Similar to a Stop, but triggers are done in the opposite direction. Useful for Take Profit orders.
-         * * **LimitIfTouched**: As above; use for Take Profit Limit orders.
+         * - **MarketIfTouched**: Similar to a Stop, but triggers are done in the opposite direction. Useful for Take Profit orders.
+         * - **LimitIfTouched**: As above; use for Take Profit Limit orders.
          *
          * #### Execution Instructions
          *
          * The following `execInst`s are supported. If using multiple, separate with a comma (e.g. `LastPrice,Close`).
          *
-         * * **ParticipateDoNotInitiate**: Also known as a Post-Only order. If this order would have executed on placement,
+         * - **ParticipateDoNotInitiate**: Also known as a Post-Only order. If this order would have executed on placement,
          * it will cancel instead.
-         * * **MarkPrice, LastPrice, IndexPrice**: Used by stop and if-touched orders to determine the triggering price.
+         * - **MarkPrice, LastPrice, IndexPrice**: Used by stop and if-touched orders to determine the triggering price.
          * Use only one. By default, `'MarkPrice'` is used. Also used for Pegged orders to define the value of `'LastPeg'`.
-         * * **ReduceOnly**: A `'ReduceOnly'` order can only reduce your position, not increase it. If you have a `'ReduceOnly'`
+         * - **ReduceOnly**: A `'ReduceOnly'` order can only reduce your position, not increase it. If you have a `'ReduceOnly'`
          * limit order that rests in the order book while the position is reduced by other orders, then its order quantity will
          * be amended down or canceled. If there are multiple `'ReduceOnly'` orders the least aggressive will be amended first.
-         * * **Close**: `'Close'` implies `'ReduceOnly'`. A `'Close'` order will cancel other active limit orders with the same side
+         * - **Close**: `'Close'` implies `'ReduceOnly'`. A `'Close'` order will cancel other active limit orders with the same side
          * and symbol if the open quantity exceeds the current position. This is useful for stops: by canceling these orders, a
          * `'Close'` Stop is ensured to have the margin required to execute, and can only execute up to the full size of your
          * position. If `orderQty` is not specified, a `'Close'` order has an `orderQty` equal to your current position's size.
-         * * Note that a `Close` order without an `orderQty` requires a `side`, so that BitMEX knows if it should trigger
+         * - Note that a `Close` order without an `orderQty` requires a `side`, so that BitMEX knows if it should trigger
          * above or below the `stopPx`.
          *
          * #### Linked Orders
@@ -244,7 +244,7 @@ export declare class BitmexAPI extends BitmexAbstractAPI {
         cancel: (form?: BITMEX.OrderDelete) => Promise<BITMEX.Order[]>;
         /**
          * @Authorized
-         * Create multiple new orders for the same symbol.This endpoint is used for placing bulk orders. Valid order types are Market, Limit, Stop, StopLimit, MarketIfTouched, LimitIfTouched, and Pegged.
+         * Create multiple new orders for the same symbol.This endpoint is used for placing bulk orders. Valid order types are Limit, Stop, StopLimit, MarketIfTouched, LimitIfTouched, and Pegged.
          *
          * Each individual order object in the array should have the same properties as an individual POST /order call.
          *
@@ -295,36 +295,36 @@ export declare class BitmexAPI extends BitmexAbstractAPI {
          *
          * The fields _account_, _symbol_, _currency_ are unique to each position and form its key.
          *
-         * * **account**: Your unique account ID.
-         * * **symbol**: The contract for this position.
-         * * **currency**: The margin currency for this position.
-         * * **underlying**: Meta data of the _symbol_.
-         * * **quoteCurrency**: Meta data of the _symbol_,  All prices are in the _quoteCurrency_
-         * * **commission**: The maximum of the maker, taker, and settlement fee.
-         * * **initMarginReq**: The initial margin requirement.  This will be at least the symbol's default initial maintenance margin, but can be higher if you choose lower leverage.
-         * * **maintMarginReq**: The maintenance margin requirement.  This will be at least the symbol's default maintenance maintenance margin, but can be higher if you choose a higher risk limit.
-         * * **riskLimit**: This is a function of your _maintMarginReq_.
-         * * **leverage**: 1 / initMarginReq.
-         * * **crossMargin**: True/false depending on whether you set cross margin on this position.
-         * * **deleveragePercentile**: Indicates where your position is in the ADL queue.
-         * * **rebalancedPnl**: The value of realised PNL that has transferred to your wallet for this position.
-         * * **prevRealisedPnl**: The value of realised PNL that has transferred to your wallet for this position since the position was closed.
-         * * **currentQty**: The current position amount in contracts.
-         * * **currentCost**: The current cost of the position in the settlement currency of the symbol (_currency_).
-         * * **currentComm**: The current commission of the position in the settlement currency of the symbol (_currency_).
-         * * **realisedCost**: The realised cost of this position calculated with regard to average cost accounting.
-         * * **unrealisedCost**: _currentCost_ - _realisedCost_.
-         * * **grossOpenCost**: The absolute value of your open orders for this symbol.
-         * * **grossOpenPremium**: The amount your bidding above the mark price in the settlement currency of the symbol (_currency_).
-         * * **markPrice**: The mark price of the symbol in _quoteCurrency_.
-         * * **markValue**: The _currentQty_ at the mark price in the settlement currency of the symbol (_currency_).
-         * * **homeNotional**: Value of position in units of _underlying_.
-         * * **foreignNotional**: Value of position in units of _quoteCurrency_.
-         * * **realisedPnl**: The negative of _realisedCost_.
-         * * **unrealisedGrossPnl**: _markValue_ - _unrealisedCost_.
-         * * **unrealisedPnl**: _unrealisedGrossPnl_.
-         * * **liquidationPrice**: Once markPrice reaches this price, this position will be liquidated.
-         * * **bankruptPrice**: Once markPrice reaches this price, this position will have no equity.
+         * - **account**: Your unique account ID.
+         * - **symbol**: The contract for this position.
+         * - **currency**: The margin currency for this position.
+         * - **underlying**: Meta data of the _symbol_.
+         * - **quoteCurrency**: Meta data of the _symbol_, All prices are in the _quoteCurrency_
+         * - **commission**: The maximum of the maker, taker, and settlement fee.
+         * - **initMarginReq**: The initial margin requirement. This will be at least the symbol's default initial maintenance margin, but can be higher if you choose lower leverage.
+         * - **maintMarginReq**: The maintenance margin requirement. This will be at least the symbol's default maintenance maintenance margin, but can be higher if you choose a higher risk limit.
+         * - **riskLimit**: This is a function of your _maintMarginReq_.
+         * - **leverage**: 1 / initMarginReq.
+         * - **crossMargin**: True/false depending on whether you set cross margin on this position.
+         * - **deleveragePercentile**: Indicates where your position is in the ADL queue.
+         * - **rebalancedPnl**: The value of realised PNL that has transferred to your wallet for this position.
+         * - **prevRealisedPnl**: The value of realised PNL that has transferred to your wallet for this position since the position was closed.
+         * - **currentQty**: The current position amount in contracts.
+         * - **currentCost**: The current cost of the position in the settlement currency of the symbol (_currency_).
+         * - **currentComm**: The current commission of the position in the settlement currency of the symbol (_currency_).
+         * - **realisedCost**: The realised cost of this position calculated with regard to average cost accounting.
+         * - **unrealisedCost**: _currentCost_ - _realisedCost_.
+         * - **grossOpenCost**: The absolute value of your open orders for this symbol.
+         * - **grossOpenPremium**: The amount your bidding above the mark price in the settlement currency of the symbol (_currency_).
+         * - **markPrice**: The mark price of the symbol in _quoteCurrency_.
+         * - **markValue**: The _currentQty_ at the mark price in the settlement currency of the symbol (_currency_).
+         * - **homeNotional**: Value of position in units of _underlying_.
+         * - **foreignNotional**: Value of position in units of _quoteCurrency_.
+         * - **realisedPnl**: The negative of _realisedCost_.
+         * - **unrealisedGrossPnl**: _markValue_ - _unrealisedCost_.
+         * - **unrealisedPnl**: _unrealisedGrossPnl_.
+         * - **liquidationPrice**: Once markPrice reaches this price, this position will be liquidated.
+         * - **bankruptPrice**: Once markPrice reaches this price, this position will have no equity.
          */
         get: (qs?: BITMEX.PositionQuery) => Promise<BITMEX.Position[]>;
         /**
@@ -347,16 +347,6 @@ export declare class BitmexAPI extends BitmexAbstractAPI {
          * Choose leverage for a position.
          */
         updateLeverage: (form: BITMEX.PositionLeveragePost) => Promise<BITMEX.Position>;
-    };
-    Quote: {
-        /**
-         * Get Quotes.
-         */
-        get: (qs?: BITMEX.QuoteQuery) => Promise<BITMEX.Quote[]>;
-        /**
-         * Get previous quotes in time buckets.Timestamps returned by our bucketed endpoints are the **end** of the period, indicating when the bucket was written to disk. Some other common systems use the timestamp as the beginning of the period. Please be aware of this when using this endpoint.
-         */
-        getBucketed: (qs?: BITMEX.QuoteBucketedQuery) => Promise<BITMEX.Quote[]>;
     };
     Schema: {
         /**
@@ -458,6 +448,11 @@ export declare class BitmexAPI extends BitmexAbstractAPI {
          * Check if a referral code is valid.If the code is valid, responds with the referral code's discount (e.g. `0.1` for 10%). Otherwise, will return a 404 or 451 if invalid.
          */
         checkReferralCode: (qs?: BITMEX.UserCheckReferralCodeQuery) => Promise<number>;
+        /**
+         * @Authorized
+         * Get 7 days worth of Quote Fill Ratio statistics.
+         */
+        getQuoteFillRatio: () => Promise<BITMEX.QuoteFillRatio>;
         /**
          * Log out of BitMEX.
          */

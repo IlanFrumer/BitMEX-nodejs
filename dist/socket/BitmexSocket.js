@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.BitmexSocket = void 0;
 const BitmexAbstractSocket_1 = require("./BitmexAbstractSocket");
 class BitmexSocket extends BitmexAbstractSocket_1.BitmexAbstractSocket {
     /*

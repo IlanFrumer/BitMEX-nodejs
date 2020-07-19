@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.BitmexTable = void 0;
 const Rx_1 = require("rxjs/Rx");
 const BitmexTableError_1 = require("./BitmexTableError");
 const DEFAULT_MAX_TABLE_LENGTH = 1000;

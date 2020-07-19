@@ -2,7 +2,7 @@ import request from 'request';
 import { parse as urlParse } from 'url';
 
 import { getAuthHeaders } from '../common/BitmexAuth';
-import { BitmexOptions } from '..';
+import { BitmexOptions } from '../common/BitmexOptions';
 
 type APIMethods = 'GET' | 'POST' | 'DELETE' | 'PUT';
 

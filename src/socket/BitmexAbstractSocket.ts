@@ -21,7 +21,7 @@ export abstract class BitmexAbstractSocket {
     private readonly closeCallback?: (code: number) => void;
     private readonly pingWaitTime: number;
 
-    constructor(options: BitmexOptions = {}, pingWaitTime?: number, closeCallback?: (code: number) => void,) {
+    constructor(options: BitmexOptions = {}, pingWaitTime?: number, closeCallback?: (code: number) => void) {
 
         let endpoint = !!options.testnet ? 'wss://testnet.bitmex.com/realtime' : 'wss://www.bitmex.com/realtime';
 

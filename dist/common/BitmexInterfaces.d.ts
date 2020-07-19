@@ -412,17 +412,6 @@ export interface Position {
     lastValue: number;
 }
 /**
- * Best Bid/Offer Snapshots & Historical Bins
- */
-export interface Quote {
-    timestamp: string;
-    symbol: string;
-    bidSize: number;
-    bidPrice: number;
-    askPrice: number;
-    askSize: number;
-}
-/**
  * Historical Settlement Data
  */
 export interface Settlement {
@@ -559,6 +548,18 @@ export interface Affiliate {
     affiliatePayout: number;
 }
 /**
+ * Daily Quote Fill Ratio Statistic
+ */
+export interface QuoteFillRatio {
+    date: string;
+    account: number;
+    quoteCount: number;
+    dealtCount: number;
+    quotesMavg7: number;
+    dealtMavg7: number;
+    quoteFillRatioMavg7: number;
+}
+/**
  * Account Operations
  */
 export interface User {
@@ -572,17 +573,16 @@ export interface User {
     created: string;
     lastUpdated: string;
     preferences: UserPreferences;
-    restrictedEngineFields: any;
     TFAEnabled: string;
     affiliateID: string;
     pgpPubKey: string;
+    pgpPubKeyCreated: string;
     country: string;
     geoipCountry: string;
     geoipRegion: string;
     typ: string;
 }
 export interface UserCommissionsBySymbol {
-    __symbol__: UserCommission;
 }
 export interface Margin {
     account: number;
@@ -637,11 +637,11 @@ export interface CommunicationToken {
     channel: string;
 }
 /**
- * User Events for auditing
+ * User Events for Auditing
  */
 export interface UserEvent {
     id: number;
-    type: 'apiKeyCreated' | 'deleverageExecution' | 'depositConfirmed' | 'depositPending' | 'banZeroVolumeApiUser' | 'liquidationOrderPlaced' | 'login' | 'pgpMaskedEmail' | 'pgpTestEmail' | 'passwordChanged' | 'positionStateLiquidated' | 'positionStateWarning' | 'resetPasswordConfirmed' | 'resetPasswordRequest' | 'transferCanceled' | 'transferCompleted' | 'transferReceived' | 'transferRequested' | 'twoFactorDisabled' | 'twoFactorEnabled' | 'withdrawalCanceled' | 'withdrawalCompleted' | 'withdrawalConfirmed' | 'withdrawalRequested' | 'verify';
+    type: 'apiKeyCreated' | 'deleverageExecution' | 'depositConfirmed' | 'depositPending' | 'banZeroVolumeApiUser' | 'liquidationOrderPlaced' | 'login' | 'pgpMaskedEmail' | 'pgpTestEmail' | 'passwordChanged' | 'positionStateLiquidated' | 'positionStateWarning' | 'resetPasswordConfirmed' | 'resetPasswordRequest' | 'transferCanceled' | 'transferCompleted' | 'transferReceived' | 'transferRequested' | 'twoFactorDisabled' | 'twoFactorEnabled' | 'withdrawalCanceled' | 'withdrawalCompleted' | 'withdrawalConfirmed' | 'withdrawalRequested' | 'addressSkipConfirmRequested' | 'addressSkipConfirmVerified' | 'verify';
     status: 'success' | 'failure';
     userId: number;
     createdById: number;
@@ -680,12 +680,6 @@ export interface UserPreferences {
     tickerGroup: string;
     tickerPinned: boolean;
     tradeLayout: string;
-}
-export interface UserCommission {
-    makerFee: number;
-    takerFee: number;
-    settlementFee: number;
-    maxFee: number;
 }
 export interface AnnouncementQuery {
     /**
@@ -726,9 +720,9 @@ export interface ChatPost {
 }
 export interface ExecutionQuery {
     /**
-     * Instrument symbol. Send a bare series (e.g. XBU) to get data for the nearest expiring contract in that series.
+     * Instrument symbol. Send a bare series (e.g. XBT) to get data for the nearest expiring contract in that series.
      *
-     * You can also send a timeframe, e.g. `XBU:monthly`. Timeframes are `daily`, `weekly`, `monthly`, `quarterly`, and `biquarterly`.
+     * You can also send a timeframe, e.g. `XBT:quarterly`. Timeframes are `nearest`, `daily`, `weekly`, `monthly`, `quarterly`, `biquarterly`, and `perpetual`.
      */
     symbol?: string;
     /**
@@ -742,7 +736,7 @@ export interface ExecutionQuery {
      */
     columns?: string;
     /**
-     * Number of results to fetch.
+     * Number of results to fetch. Must be a positive integer.
      */
     count?: number;
     /**
@@ -764,9 +758,9 @@ export interface ExecutionQuery {
 }
 export interface ExecutionTradeHistoryQuery {
     /**
-     * Instrument symbol. Send a bare series (e.g. XBU) to get data for the nearest expiring contract in that series.
+     * Instrument symbol. Send a bare series (e.g. XBT) to get data for the nearest expiring contract in that series.
      *
-     * You can also send a timeframe, e.g. `XBU:monthly`. Timeframes are `daily`, `weekly`, `monthly`, `quarterly`, and `biquarterly`.
+     * You can also send a timeframe, e.g. `XBT:quarterly`. Timeframes are `nearest`, `daily`, `weekly`, `monthly`, `quarterly`, `biquarterly`, and `perpetual`.
      */
     symbol?: string;
     /**
@@ -780,7 +774,7 @@ export interface ExecutionTradeHistoryQuery {
      */
     columns?: string;
     /**
-     * Number of results to fetch.
+     * Number of results to fetch. Must be a positive integer.
      */
     count?: number;
     /**
@@ -802,9 +796,9 @@ export interface ExecutionTradeHistoryQuery {
 }
 export interface FundingQuery {
     /**
-     * Instrument symbol. Send a bare series (e.g. XBU) to get data for the nearest expiring contract in that series.
+     * Instrument symbol. Send a bare series (e.g. XBT) to get data for the nearest expiring contract in that series.
      *
-     * You can also send a timeframe, e.g. `XBU:monthly`. Timeframes are `daily`, `weekly`, `monthly`, `quarterly`, and `biquarterly`.
+     * You can also send a timeframe, e.g. `XBT:quarterly`. Timeframes are `nearest`, `daily`, `weekly`, `monthly`, `quarterly`, `biquarterly`, and `perpetual`.
      */
     symbol?: string;
     /**
@@ -818,7 +812,7 @@ export interface FundingQuery {
      */
     columns?: string;
     /**
-     * Number of results to fetch.
+     * Number of results to fetch. Must be a positive integer.
      */
     count?: number;
     /**
@@ -840,9 +834,9 @@ export interface FundingQuery {
 }
 export interface InstrumentQuery {
     /**
-     * Instrument symbol. Send a bare series (e.g. XBU) to get data for the nearest expiring contract in that series.
+     * Instrument symbol. Send a bare series (e.g. XBT) to get data for the nearest expiring contract in that series.
      *
-     * You can also send a timeframe, e.g. `XBU:monthly`. Timeframes are `daily`, `weekly`, `monthly`, `quarterly`, and `biquarterly`.
+     * You can also send a timeframe, e.g. `XBT:quarterly`. Timeframes are `nearest`, `daily`, `weekly`, `monthly`, `quarterly`, `biquarterly`, and `perpetual`.
      */
     symbol?: string;
     /**
@@ -856,7 +850,7 @@ export interface InstrumentQuery {
      */
     columns?: string;
     /**
-     * Number of results to fetch.
+     * Number of results to fetch. Must be a positive integer.
      */
     count?: number;
     /**
@@ -892,7 +886,7 @@ export interface InstrumentCompositeIndexQuery {
      */
     columns?: string;
     /**
-     * Number of results to fetch.
+     * Number of results to fetch. Must be a positive integer.
      */
     count?: number;
     /**
@@ -914,9 +908,9 @@ export interface InstrumentCompositeIndexQuery {
 }
 export interface InsuranceQuery {
     /**
-     * Instrument symbol. Send a bare series (e.g. XBU) to get data for the nearest expiring contract in that series.
+     * Instrument symbol. Send a bare series (e.g. XBT) to get data for the nearest expiring contract in that series.
      *
-     * You can also send a timeframe, e.g. `XBU:monthly`. Timeframes are `daily`, `weekly`, `monthly`, `quarterly`, and `biquarterly`.
+     * You can also send a timeframe, e.g. `XBT:quarterly`. Timeframes are `nearest`, `daily`, `weekly`, `monthly`, `quarterly`, `biquarterly`, and `perpetual`.
      */
     symbol?: string;
     /**
@@ -930,7 +924,7 @@ export interface InsuranceQuery {
      */
     columns?: string;
     /**
-     * Number of results to fetch.
+     * Number of results to fetch. Must be a positive integer.
      */
     count?: number;
     /**
@@ -958,9 +952,9 @@ export interface LeaderboardQuery {
 }
 export interface LiquidationQuery {
     /**
-     * Instrument symbol. Send a bare series (e.g. XBU) to get data for the nearest expiring contract in that series.
+     * Instrument symbol. Send a bare series (e.g. XBT) to get data for the nearest expiring contract in that series.
      *
-     * You can also send a timeframe, e.g. `XBU:monthly`. Timeframes are `daily`, `weekly`, `monthly`, `quarterly`, and `biquarterly`.
+     * You can also send a timeframe, e.g. `XBT:quarterly`. Timeframes are `nearest`, `daily`, `weekly`, `monthly`, `quarterly`, `biquarterly`, and `perpetual`.
      */
     symbol?: string;
     /**
@@ -974,7 +968,7 @@ export interface LiquidationQuery {
      */
     columns?: string;
     /**
-     * Number of results to fetch.
+     * Number of results to fetch. Must be a positive integer.
      */
     count?: number;
     /**
@@ -996,9 +990,9 @@ export interface LiquidationQuery {
 }
 export interface OrderQuery {
     /**
-     * Instrument symbol. Send a bare series (e.g. XBU) to get data for the nearest expiring contract in that series.
+     * Instrument symbol. Send a bare series (e.g. XBT) to get data for the nearest expiring contract in that series.
      *
-     * You can also send a timeframe, e.g. `XBU:monthly`. Timeframes are `daily`, `weekly`, `monthly`, `quarterly`, and `biquarterly`.
+     * You can also send a timeframe, e.g. `XBT:quarterly`. Timeframes are `nearest`, `daily`, `weekly`, `monthly`, `quarterly`, `biquarterly`, and `perpetual`.
      */
     symbol?: string;
     /**
@@ -1012,7 +1006,7 @@ export interface OrderQuery {
      */
     columns?: string;
     /**
-     * Number of results to fetch.
+     * Number of results to fetch. Must be a positive integer.
      */
     count?: number;
     /**
@@ -1264,90 +1258,6 @@ export interface PositionLeveragePost {
      */
     leverage: number;
 }
-export interface QuoteQuery {
-    /**
-     * Instrument symbol. Send a bare series (e.g. XBU) to get data for the nearest expiring contract in that series.
-     *
-     * You can also send a timeframe, e.g. `XBU:monthly`. Timeframes are `daily`, `weekly`, `monthly`, `quarterly`, and `biquarterly`.
-     */
-    symbol?: string;
-    /**
-     * Generic table filter. Send JSON key/value pairs, such as `{"key": "value"}`. You can key on individual fields, and do more advanced querying on timestamps. See the [Timestamp Docs](https://www.bitmex.com/app/restAPI#Timestamp-Filters) for more details.
-     */
-    filter?: string;
-    /**
-     * Array of column names to fetch. If omitted, will return all columns.
-     *
-     * Note that this method will always return item keys, even when not specified, so you may receive more columns that you expect.
-     */
-    columns?: string;
-    /**
-     * Number of results to fetch.
-     */
-    count?: number;
-    /**
-     * Starting point for results.
-     */
-    start?: number;
-    /**
-     * If true, will sort results newest first.
-     */
-    reverse?: boolean;
-    /**
-     * Starting date filter for results.
-     */
-    startTime?: string;
-    /**
-     * Ending date filter for results.
-     */
-    endTime?: string;
-}
-export interface QuoteBucketedQuery {
-    /**
-     * Time interval to bucket by. Available options: [1m,5m,1h,1d].
-     */
-    binSize?: '1m' | '5m' | '1h' | '1d';
-    /**
-     * If true, will send in-progress (incomplete) bins for the current time period.
-     */
-    partial?: boolean;
-    /**
-     * Instrument symbol. Send a bare series (e.g. XBU) to get data for the nearest expiring contract in that series.
-     *
-     * You can also send a timeframe, e.g. `XBU:monthly`. Timeframes are `daily`, `weekly`, `monthly`, `quarterly`, and `biquarterly`.
-     */
-    symbol?: string;
-    /**
-     * Generic table filter. Send JSON key/value pairs, such as `{"key": "value"}`. You can key on individual fields, and do more advanced querying on timestamps. See the [Timestamp Docs](https://www.bitmex.com/app/restAPI#Timestamp-Filters) for more details.
-     */
-    filter?: string;
-    /**
-     * Array of column names to fetch. If omitted, will return all columns.
-     *
-     * Note that this method will always return item keys, even when not specified, so you may receive more columns that you expect.
-     */
-    columns?: string;
-    /**
-     * Number of results to fetch.
-     */
-    count?: number;
-    /**
-     * Starting point for results.
-     */
-    start?: number;
-    /**
-     * If true, will sort results newest first.
-     */
-    reverse?: boolean;
-    /**
-     * Starting date filter for results.
-     */
-    startTime?: string;
-    /**
-     * Ending date filter for results.
-     */
-    endTime?: string;
-}
 export interface SchemaQuery {
     /**
      * Optional model filter. If omitted, will return all models.
@@ -1356,9 +1266,9 @@ export interface SchemaQuery {
 }
 export interface SettlementQuery {
     /**
-     * Instrument symbol. Send a bare series (e.g. XBU) to get data for the nearest expiring contract in that series.
+     * Instrument symbol. Send a bare series (e.g. XBT) to get data for the nearest expiring contract in that series.
      *
-     * You can also send a timeframe, e.g. `XBU:monthly`. Timeframes are `daily`, `weekly`, `monthly`, `quarterly`, and `biquarterly`.
+     * You can also send a timeframe, e.g. `XBT:quarterly`. Timeframes are `nearest`, `daily`, `weekly`, `monthly`, `quarterly`, `biquarterly`, and `perpetual`.
      */
     symbol?: string;
     /**
@@ -1372,7 +1282,7 @@ export interface SettlementQuery {
      */
     columns?: string;
     /**
-     * Number of results to fetch.
+     * Number of results to fetch. Must be a positive integer.
      */
     count?: number;
     /**
@@ -1394,9 +1304,9 @@ export interface SettlementQuery {
 }
 export interface TradeQuery {
     /**
-     * Instrument symbol. Send a bare series (e.g. XBU) to get data for the nearest expiring contract in that series.
+     * Instrument symbol. Send a bare series (e.g. XBT) to get data for the nearest expiring contract in that series.
      *
-     * You can also send a timeframe, e.g. `XBU:monthly`. Timeframes are `daily`, `weekly`, `monthly`, `quarterly`, and `biquarterly`.
+     * You can also send a timeframe, e.g. `XBT:quarterly`. Timeframes are `nearest`, `daily`, `weekly`, `monthly`, `quarterly`, `biquarterly`, and `perpetual`.
      */
     symbol?: string;
     /**
@@ -1410,7 +1320,7 @@ export interface TradeQuery {
      */
     columns?: string;
     /**
-     * Number of results to fetch.
+     * Number of results to fetch. Must be a positive integer.
      */
     count?: number;
     /**
@@ -1440,9 +1350,9 @@ export interface TradeBucketedQuery {
      */
     partial?: boolean;
     /**
-     * Instrument symbol. Send a bare series (e.g. XBU) to get data for the nearest expiring contract in that series.
+     * Instrument symbol. Send a bare series (e.g. XBT) to get data for the nearest expiring contract in that series.
      *
-     * You can also send a timeframe, e.g. `XBU:monthly`. Timeframes are `daily`, `weekly`, `monthly`, `quarterly`, and `biquarterly`.
+     * You can also send a timeframe, e.g. `XBT:quarterly`. Timeframes are `nearest`, `daily`, `weekly`, `monthly`, `quarterly`, `biquarterly`, and `perpetual`.
      */
     symbol?: string;
     /**
@@ -1456,7 +1366,7 @@ export interface TradeBucketedQuery {
      */
     columns?: string;
     /**
-     * Number of results to fetch.
+     * Number of results to fetch. Must be a positive integer.
      */
     count?: number;
     /**
@@ -1517,9 +1427,17 @@ export interface UserRequestWithdrawalPost {
      */
     amount: number;
     /**
-     * Destination Address.
+     * Destination Address. One of `address`, `addressId`, `targetUserId` has to be specified.
      */
-    address: string;
+    address?: string;
+    /**
+     * ID of the Destination Address. One of `address`, `targetUserId`, `targetUserId` has to be specified.
+     */
+    addressId?: number;
+    /**
+     * ID of the Target User. One of `address`, `addressId`, `targetUserId` has to be specified.
+     */
+    targetUserId?: number;
     /**
      * Network fee for Bitcoin withdrawals. If not specified, a default value will be calculated based on Bitcoin network conditions. You will have a chance to confirm this via email.
      */
