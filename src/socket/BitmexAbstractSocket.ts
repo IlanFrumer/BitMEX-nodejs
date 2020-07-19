@@ -4,23 +4,24 @@ import WebSocket from 'ws';
 import { getWSAuthQuery } from '../common/BitmexAuth';
 import { ITableMessage } from './ITableMessage';
 import { BitmexObservable } from './BitmexObservable';
-import { BitmexOptions } from '../common/BitmexOptions';
+import { BitmexOptions } from '..';
 
 const debug = require('debug')('bitmex-node');
-const PING = 10 * 1000;
 
 // TODO
 // {"op": "cancelAllAfter", "args": 60000}
 
 export abstract class BitmexAbstractSocket {
 
-    private tableSubject$ = new Subject<ITableMessage & { data: any[] }>();
+    private readonly tableSubject$ = new Subject<ITableMessage & { data: any[] }>();
 
-    private subscribers = new Map<Subscriber<any>, string>();
-    private subscriptions = new Map<string, 'unsubscribed' | 'subscribed' | 'pending'>();
-    private send: (message: object | 'ping' | '"help"') => boolean;
+    private readonly subscribers = new Map<Subscriber<any>, string>();
+    private readonly subscriptions = new Map<string, 'unsubscribed' | 'subscribed' | 'pending'>();
+    private readonly webSocket: WebSocket;
+    private readonly closeCallback?: (code: number) => void;
+    private readonly pingWaitTime: number;
 
-    constructor(options: BitmexOptions = {}) {
+    constructor(options: BitmexOptions = {}, pingWaitTime?: number, closeCallback?: (code: number) => void,) {
 
         let endpoint = !!options.testnet ? 'wss://testnet.bitmex.com/realtime' : 'wss://www.bitmex.com/realtime';
 
@@ -28,31 +29,92 @@ export abstract class BitmexAbstractSocket {
             endpoint += `?${getWSAuthQuery(options.apiKeyID, options.apiKeySecret)}`;
         }
 
-        let ping: NodeJS.Timer;
+        this.webSocket = this.createWebSocket(endpoint);
+        this.pingWaitTime = pingWaitTime || 10 * 1000;
+        this.closeCallback = closeCallback;
+    }
+
+    close() {
+        if (this.webSocket.readyState !== WebSocket.CLOSED && this.webSocket.readyState !== WebSocket.CLOSING) {
+            this.webSocket.close();
+        }
+    }
+
+    protected createObservable<T>(table: string, opts: { symbol?: string, filterKey?: number } = {}) {
+        const symbol = opts.symbol;
+        const filterKey = opts.filterKey;
+
+        type Data = ITableMessage & { data: T[] };
+        let subscription: string;
+        let filterFn: (data: Data) => boolean;
+
+        if (typeof opts.symbol !== 'undefined') {
+            subscription = table + ':' + symbol;
+            filterFn = (d: any) => d.data.every((e: any) => e['symbol'] === symbol);
+        } else if (typeof opts.filterKey !== 'undefined') {
+            subscription = table + ':' + filterKey;
+            filterFn = (d: any) => d.data.every((e: any) => e[d.filterKey] === filterKey);
+        } else  {
+            subscription = table;
+            filterFn = () => true;
+        }
+
+        return new BitmexObservable<T, Data>(observer => {
+            const sub$ = this.tableSubject$
+              .filter(d => d.table === table)
+              .filter(filterFn)
+              .subscribe(d => observer.next(d));
+
+            this.subscribers.set(observer, subscription);
+            this.syncSubscribers();
+            return () => {
+                sub$.unsubscribe();
+                this.subscribers.delete(observer);
+                this.syncSubscribers();
+            };
+        });
+    }
+
+    private createWebSocket(endpoint: string) {
+        let ping: NodeJS.Timer | undefined;
         const ws = new WebSocket(endpoint);
 
-        this.send = (message: object | 'ping' | '"help"') => {
-            if (ws.readyState !== WebSocket.OPEN) {
-                return false;
-            } else {
-                const value = typeof message === 'string' ? message : JSON.stringify(message);
-                ws.send(value);
-                return true;
-            }
-        };
+        const handlePingTimeout = () => {
+            this.send('ping');
+            ping = undefined;
+        }
 
         ws.on('open', () => this.syncSubscribers());
-
         ws.on('message', (message) => {
-            clearTimeout(ping);
-            ping = setTimeout(() => this.send('ping'), PING);
+            if (ping) {
+                ping.refresh();
+            } else {
+                ping = setTimeout(handlePingTimeout, this.pingWaitTime);
+            }
+
             if (message === 'pong') { return; }
             const json = JSON.parse(message.toString());
             this.messageHandler(json);
         });
-
         ws.on('error', (err) => debug('error %o', err));
+        ws.on('close', (code) => {
+            if (this.closeCallback) {
+                this.closeCallback(code);
+            }
+        });
+
+        return ws;
     }
+
+    private send(message: object | 'ping' | '"help"') {
+        if (this.webSocket.readyState !== WebSocket.OPEN) {
+            return false;
+        } else {
+            const value = typeof message === 'string' ? message : JSON.stringify(message);
+            this.webSocket.send(value);
+            return true;
+        }
+    };
 
     private syncSubscribers() {
         const subscribers = new Set(this.subscribers.values());
@@ -86,43 +148,6 @@ export abstract class BitmexAbstractSocket {
             this.send({ 'op': 'unsubscribe', 'args': Array.from(toUnsubscribe) }) &&
                 toUnsubscribe.forEach(subscription => this.subscriptions.set(subscription, 'pending'));
         }
-    }
-
-    protected createObservable<T>(table: string, opts: { symbol?: string, filterKey?: number } = {}) {
-        const symbol = opts.symbol;
-        const filterKey = opts.filterKey;
-
-        type Data = ITableMessage & { data: T[] };
-        let subscription: string;
-        let filterFn: (data: Data) => boolean;
-
-        if (typeof opts.symbol !== 'undefined') {
-            subscription = table + ':' + symbol;
-            filterFn = (d: any) => d.data.every((e: any) => e['symbol'] === symbol);
-        } else if (typeof opts.filterKey !== 'undefined') {
-            subscription = table + ':' + filterKey;
-            filterFn = (d: any) => d.data.every((e: any) => e[d.filterKey] === filterKey);
-        } else  {
-            subscription = table;
-            filterFn = () => true;
-        }
-
-        const observable = new BitmexObservable<T, Data>(observer => {
-            const sub$ = this.tableSubject$
-                .filter(d => d.table === table)
-                .filter(filterFn)
-                .subscribe(d => observer.next(d));
-
-            this.subscribers.set(observer, subscription);
-            this.syncSubscribers();
-            return () => {
-                sub$.unsubscribe();
-                this.subscribers.delete(observer);
-                this.syncSubscribers();
-            };
-        });
-
-        return observable;
     }
 
     private messageHandler(data: any) {
