@@ -33,6 +33,10 @@ export abstract class BitmexAbstractAPI {
         this.waitForRateLimit = waitForRateLimit;
     }
 
+    public getRateLimit() {
+        return this.ratelimit;
+    }
+
     private getRateLimitTimeout() {
         const rate = this.ratelimit;
         return rate != null && rate.remaining <= 0 ? Math.max(rate.reset - new Date().valueOf(), 0) : 0;
