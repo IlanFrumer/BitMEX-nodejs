@@ -76,20 +76,30 @@ export abstract class BitmexAbstractSocket {
     }
 
     private createWebSocket(endpoint: string) {
-        let ping: NodeJS.Timer | undefined;
+        let pingTimeout: NodeJS.Timeout | undefined;
+        let pongTimeout: NodeJS.Timeout | undefined;
         const ws = new WebSocket(endpoint);
+        
+        const handlePongTimeout = () => {
+            this.close();
+        };
 
         const handlePingTimeout = () => {
             this.send('ping');
-            ping = undefined;
+            setTimeout(handlePongTimeout, this.pingWaitTime);
+            pingTimeout = undefined;
         }
 
         ws.on('open', () => this.syncSubscribers());
         ws.on('message', (message) => {
-            if (ping) {
-                ping.refresh();
-            } else {
-                ping = setTimeout(handlePingTimeout, this.pingWaitTime);
+            if (pingTimeout) {
+                pingTimeout.refresh();
+            } else if (this.pingWaitTime > 0) {
+                pingTimeout = setTimeout(handlePingTimeout, this.pingWaitTime);
+            }
+
+            if (pongTimeout) {
+                clearTimeout(pongTimeout);
             }
 
             if (message === 'pong') { return; }
