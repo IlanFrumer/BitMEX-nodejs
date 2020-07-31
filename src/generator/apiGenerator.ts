@@ -13,7 +13,7 @@ const HEADER = `
 
     // tslint:disable:max-line-length`;
 
-request.get(SWAGGER, async (err, res, body) => {
+request.get(SWAGGER, async (err, _res, body) => {
     // tslint:disable-next-line:no-console
     if (err) { return console.log(err); }
     const data = JSON.parse(body);

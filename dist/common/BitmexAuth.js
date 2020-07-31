@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.getWSAuthQuery = exports.getAuthHeaders = void 0;
 const crypto_1 = require("crypto");
 const querystring_1 = require("querystring");
 // prevents colliding nonces. Otherwise, use expires

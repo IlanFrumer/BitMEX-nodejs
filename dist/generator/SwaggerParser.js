@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.SwaggerParser = exports.CONTAINER = void 0;
 exports.CONTAINER = 'BITMEX';
 const toEntries = (obj) => Object.keys(obj).map(key => [key, obj[key]]);
 const titleCase = (w) => w.charAt(0).toUpperCase() + w.substr(1).toLowerCase();
@@ -20,8 +21,12 @@ class SwaggerParser {
         this.definitionsMap = new Map();
         this.definitionsDescMap = new Map();
         for (const [name, item] of toEntries(data.definitions)) {
+            if (name === 'x-any')
+                continue;
             // TODO: use item.required
             this.definitionsDescMap.set(name, item.description);
+            const defs = [];
+            this.definitionsMap.set(name, defs);
             for (const [prop, def] of toEntries(item.properties)) {
                 let arg = 'any';
                 switch (def.type) {
@@ -55,9 +60,9 @@ class SwaggerParser {
                 if (comments.length) {
                     row += ' // ' + comments.join(', ');
                 }
-                const arr = this.definitionsMap.get(name) || [];
-                arr.push(row);
-                this.definitionsMap.set(name, arr);
+                // const arr = this.definitionsMap.get(name)!;
+                defs.push(row);
+                // this.definitionsMap.set(name, arr);
             }
         }
         for (const [path, methods] of toEntries(data.paths)) {

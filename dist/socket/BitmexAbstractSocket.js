@@ -1,8 +1,11 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-const tslib_1 = require("tslib");
+exports.BitmexAbstractSocket = void 0;
 const Rx_1 = require("rxjs/Rx");
-const ws_1 = tslib_1.__importDefault(require("ws"));
+const ws_1 = __importDefault(require("ws"));
 const BitmexAuth_1 = require("../common/BitmexAuth");
 const BitmexObservable_1 = require("./BitmexObservable");
 const debug = require('debug')('bitmex-node');

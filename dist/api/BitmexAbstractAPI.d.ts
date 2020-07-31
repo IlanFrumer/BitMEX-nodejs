@@ -1,4 +1,4 @@
-import { BitmexOptions } from '..';
+import { BitmexOptions } from '../common/BitmexOptions';
 declare type APIMethods = 'GET' | 'POST' | 'DELETE' | 'PUT';
 export interface BitMEXRateLimit {
     limit: number;

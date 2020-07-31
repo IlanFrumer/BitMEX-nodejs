@@ -109,8 +109,11 @@ export class SwaggerParser {
 
     constructor(readonly data: any) {
         for (const [name, item] of toEntries(data.definitions)) {
+            if (name === 'x-any') continue;
             // TODO: use item.required
             this.definitionsDescMap.set(name, item.description);
+            const defs: string[] = [];
+            this.definitionsMap.set(name, defs);
             for (const [prop, def] of toEntries(item.properties)) {
                 let arg = 'any';
                 switch (def.type) {
@@ -149,9 +152,9 @@ export class SwaggerParser {
 
                 if (comments.length) { row += ' // ' + comments.join(', '); }
 
-                const arr = this.definitionsMap.get(name) || [];
-                arr.push(row);
-                this.definitionsMap.set(name, arr);
+                // const arr = this.definitionsMap.get(name)!;
+                defs.push(row);
+                // this.definitionsMap.set(name, arr);
             }
         }
 
