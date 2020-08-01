@@ -1,7 +1,7 @@
-import { Subscription, ReplaySubject, Observable, Subscriber } from 'rxjs/Rx';
-import { ITableMessage } from './ITableMessage';
-import { BitmexObservable } from './BitmexObservable';
-import { BitmexTableError } from './BitmexTableError';
+import {Observable} from 'rxjs/Rx';
+import {ITableMessage} from './ITableMessage';
+import {BitmexObservable} from './BitmexObservable';
+import {BitmexTableError} from './BitmexTableError';
 
 const DEFAULT_MAX_TABLE_LENGTH = 1000;
 

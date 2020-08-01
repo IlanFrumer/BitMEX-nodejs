@@ -1,8 +1,8 @@
 import request from 'request';
-import { parse as urlParse } from 'url';
+import {parse as urlParse} from 'url';
 
-import { getAuthHeaders } from '../common/BitmexAuth';
-import { BitmexOptions } from '../common/BitmexOptions';
+import {getAuthHeaders} from '../common/BitmexAuth';
+import {BitmexOptions} from '..';
 
 type APIMethods = 'GET' | 'POST' | 'DELETE' | 'PUT';
 
@@ -48,7 +48,6 @@ export abstract class BitmexAbstractAPI {
 
         const url = `${ this.host }${this.basePath}${endpoint}`;
         const path = urlParse(url).pathname || '';
-
         const headers = (auth || this.hasApiKeys) ? getAuthHeaders({
             apiKeyID: this.apiKeyID,
             apiKeySecret: this.apiKeySecret,
