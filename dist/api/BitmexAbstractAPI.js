@@ -45,7 +45,9 @@ class BitmexAbstractAPI {
             url,
             headers, json: true }, opts);
         const timeout = this.getRateLimitTimeout();
-        await this.wait(timeout);
+        if (this.waitForRateLimit) {
+            await this.wait(timeout);
+        }
         return new Promise((resolve, reject) => {
             request_1.default(options, (error, response, body) => {
                 if (error) {

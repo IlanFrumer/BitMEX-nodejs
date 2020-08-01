@@ -69,7 +69,7 @@ class BitmexAbstractSocket {
         };
         const handlePingTimeout = () => {
             this.send('ping');
-            setTimeout(handlePongTimeout, this.pingWaitTime);
+            pongTimeout = setTimeout(handlePongTimeout, this.pingWaitTime);
             pingTimeout = undefined;
         };
         ws.on('open', () => this.syncSubscribers());
