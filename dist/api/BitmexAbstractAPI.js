@@ -8,7 +8,7 @@ const request_1 = __importDefault(require("request"));
 const url_1 = require("url");
 const BitmexAuth_1 = require("../common/BitmexAuth");
 class BitmexAbstractAPI {
-    constructor(options = {}) {
+    constructor(options = {}, waitForRateLimit = true) {
         this.ratelimit = null;
         const proxy = options.proxy || '';
         this.host = !!options.testnet ?
@@ -16,6 +16,10 @@ class BitmexAbstractAPI {
         this.apiKeyID = options.apiKeyID || null;
         this.apiKeySecret = options.apiKeySecret || null;
         this.hasApiKeys = !!(this.apiKeyID && this.apiKeySecret);
+        this.waitForRateLimit = waitForRateLimit;
+    }
+    getRateLimit() {
+        return this.ratelimit;
     }
     getRateLimitTimeout() {
         const rate = this.ratelimit;
@@ -41,7 +45,9 @@ class BitmexAbstractAPI {
             url,
             headers, json: true }, opts);
         const timeout = this.getRateLimitTimeout();
-        await this.wait(timeout);
+        if (this.waitForRateLimit) {
+            await this.wait(timeout);
+        }
         return new Promise((resolve, reject) => {
             request_1.default(options, (error, response, body) => {
                 if (error) {

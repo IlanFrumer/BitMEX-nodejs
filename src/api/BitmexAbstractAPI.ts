@@ -1,10 +1,16 @@
 import request from 'request';
-import { parse as urlParse } from 'url';
+import {parse as urlParse} from 'url';
 
-import { getAuthHeaders } from '../common/BitmexAuth';
-import { BitmexOptions } from '../common/BitmexOptions';
+import {getAuthHeaders} from '../common/BitmexAuth';
+import {BitmexOptions} from '..';
 
 type APIMethods = 'GET' | 'POST' | 'DELETE' | 'PUT';
+
+export interface BitMEXRateLimit {
+    limit: number;
+    remaining: number;
+    reset: number;
+}
 
 export abstract class BitmexAbstractAPI {
 
@@ -13,16 +19,22 @@ export abstract class BitmexAbstractAPI {
     readonly apiKeySecret: string | null;
     readonly apiKeyID: string | null;
     readonly hasApiKeys: boolean;
+    readonly waitForRateLimit: boolean;
 
-    private ratelimit: { limit: number; remaining: number; reset: number; } | null = null;
+    private ratelimit: BitMEXRateLimit | null = null;
 
-    constructor(options: BitmexOptions = {}) {
+    constructor(options: BitmexOptions = {}, waitForRateLimit = true) {
         const proxy = options.proxy || '';
         this.host = !!options.testnet ?
           `${proxy}https://testnet.bitmex.com` : `${proxy}https://www.bitmex.com`;
         this.apiKeyID = options.apiKeyID || null;
         this.apiKeySecret = options.apiKeySecret || null;
         this.hasApiKeys = !!(this.apiKeyID && this.apiKeySecret);
+        this.waitForRateLimit = waitForRateLimit;
+    }
+
+    public getRateLimit() {
+        return this.ratelimit;
     }
 
     private getRateLimitTimeout() {
@@ -36,7 +48,6 @@ export abstract class BitmexAbstractAPI {
 
         const url = `${ this.host }${this.basePath}${endpoint}`;
         const path = urlParse(url).pathname || '';
-
         const headers = (auth || this.hasApiKeys) ? getAuthHeaders({
             apiKeyID: this.apiKeyID,
             apiKeySecret: this.apiKeySecret,
@@ -54,7 +65,9 @@ export abstract class BitmexAbstractAPI {
         };
 
         const timeout = this.getRateLimitTimeout();
-        await this.wait(timeout);
+        if (this.waitForRateLimit) {
+            await this.wait(timeout);
+        }
         return new Promise<T>((resolve, reject) => {
             request(options, (error, response, body) => {
                 if (error) { return reject(error); }
