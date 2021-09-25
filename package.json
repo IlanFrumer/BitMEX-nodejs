@@ -1,5 +1,5 @@
 {
-    "name": "bitmex-node",
+    "name": "@strong-roots-capital/bitmex-node",
     "version": "1.9.1",
     "description": "",
     "main": "dist/index.js",
