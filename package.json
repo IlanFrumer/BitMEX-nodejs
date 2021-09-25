@@ -39,5 +39,8 @@
         "tabWidth": 4,
         "requirePragma": true,
         "bracketSpacing": true
+    },
+    "publishConfig": {
+        "access": "public"
     }
 }
