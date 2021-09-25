@@ -1,4 +1,4 @@
-import { Observable } from 'rxjs/Rx';
+import { Observable } from 'rxjs';
 import { BitmexTable } from './BitmexTable';
 
 export class BitmexObservable<T, Data> extends  Observable<Data> {

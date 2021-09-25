@@ -1,4 +1,5 @@
-import { Subscriber, Subject } from 'rxjs/Rx';
+import { Subscriber, Subject } from 'rxjs';
+import { filter } from 'rxjs/operators';
 import WebSocket from 'ws';
 
 import { getWSAuthQuery } from '../common/BitmexAuth';
@@ -61,9 +62,9 @@ export abstract class BitmexAbstractSocket {
 
         return new BitmexObservable<T, Data>(observer => {
             const sub$ = this.tableSubject$
-              .filter(d => d.table === table)
-              .filter(filterFn)
-              .subscribe(d => observer.next(d));
+                .pipe(filter(d => d.table === table))
+                .pipe(filter(filterFn))
+                .subscribe(d => observer.next(d));
 
             this.subscribers.set(observer, subscription);
             this.syncSubscribers();

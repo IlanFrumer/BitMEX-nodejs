@@ -4,7 +4,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.BitmexAbstractSocket = void 0;
-const Rx_1 = require("rxjs/Rx");
+const rxjs_1 = require("rxjs");
+const operators_1 = require("rxjs/operators");
 const ws_1 = __importDefault(require("ws"));
 const BitmexAuth_1 = require("../common/BitmexAuth");
 const BitmexObservable_1 = require("./BitmexObservable");
@@ -13,7 +14,7 @@ const debug = require('debug')('bitmex-node');
 // {"op": "cancelAllAfter", "args": 60000}
 class BitmexAbstractSocket {
     constructor(options = {}, pingWaitTime, closeCallback) {
-        this.tableSubject$ = new Rx_1.Subject();
+        this.tableSubject$ = new rxjs_1.Subject();
         this.subscribers = new Map();
         this.subscriptions = new Map();
         let endpoint = !!options.testnet ? 'wss://testnet.bitmex.com/realtime' : 'wss://www.bitmex.com/realtime';
@@ -48,8 +49,8 @@ class BitmexAbstractSocket {
         }
         return new BitmexObservable_1.BitmexObservable(observer => {
             const sub$ = this.tableSubject$
-                .filter(d => d.table === table)
-                .filter(filterFn)
+                .pipe(operators_1.filter(d => d.table === table))
+                .pipe(operators_1.filter(filterFn))
                 .subscribe(d => observer.next(d));
             this.subscribers.set(observer, subscription);
             this.syncSubscribers();

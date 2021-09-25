@@ -1,4 +1,5 @@
-import { Subscription, ReplaySubject, Observable, Subscriber } from 'rxjs/Rx';
+import { Observable } from 'rxjs';
+import { tap, map, share } from 'rxjs/operators';
 import { ITableMessage } from './ITableMessage';
 import { BitmexObservable } from './BitmexObservable';
 import { BitmexTableError } from './BitmexTableError';
@@ -10,9 +11,9 @@ export class BitmexTable<T> extends Observable<T[]> {
     private data: T[] = [];
     private keys: string[] = [];
     private data$ = this.observable
-        .do((data) => this.on(data))
-        .map(() => this.data)
-        .share();
+        .pipe(tap((data) => this.on(data)))
+        .pipe(map(() => this.data))
+        .pipe(share());
 
     constructor(private observable: BitmexObservable<T, any>, private options: { maxTableLength?: number }) {
         super((subscriber) => {

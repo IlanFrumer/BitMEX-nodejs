@@ -1,10 +1,11 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.BitmexTable = void 0;
-const Rx_1 = require("rxjs/Rx");
+const rxjs_1 = require("rxjs");
+const operators_1 = require("rxjs/operators");
 const BitmexTableError_1 = require("./BitmexTableError");
 const DEFAULT_MAX_TABLE_LENGTH = 1000;
-class BitmexTable extends Rx_1.Observable {
+class BitmexTable extends rxjs_1.Observable {
     constructor(observable, options) {
         super((subscriber) => {
             const subs = this.data$.subscribe(d => subscriber.next(d));
@@ -15,9 +16,9 @@ class BitmexTable extends Rx_1.Observable {
         this.data = [];
         this.keys = [];
         this.data$ = this.observable
-            .do((data) => this.on(data))
-            .map(() => this.data)
-            .share();
+            .pipe(operators_1.tap((data) => this.on(data)))
+            .pipe(operators_1.map(() => this.data))
+            .pipe(operators_1.share());
     }
     on(message) {
         switch (message.action) {
