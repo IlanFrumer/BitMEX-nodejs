@@ -24,7 +24,7 @@ export abstract class BitmexAbstractSocket {
 
     constructor(options: BitmexOptions = {}, pingWaitTime?: number, closeCallback?: (code: number) => void) {
 
-        let endpoint = !!options.testnet ? 'wss://testnet.bitmex.com/realtime' : 'wss://www.bitmex.com/realtime';
+        let endpoint = !!options.testnet ? 'wss://ws.testnet.bitmex.com/realtime' : 'wss://ws.bitmex.com/realtime';
 
         if (options.apiKeyID && options.apiKeySecret) {
             endpoint += `?${getWSAuthQuery(options.apiKeyID, options.apiKeySecret)}`;
