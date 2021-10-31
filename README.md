@@ -1,8 +1,14 @@
 ### BitMEX-nodejs - An unofficial BitMEX API connector written with typescript
 
+[![NPM Package][]](https://npmjs.org/package/@strong-roots-capital/bitmex-nodejs)
+[![semantic-release]](https://github.com/semantic-release/semantic-release)
+
+[npm package]: https://img.shields.io/npm/v/@strong-roots-capital/bitmex-nodejs.svg
+[semantic-release]: https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg
+
 *All types and methods are automatically generated from BitMEX official Swagger Specification*
 
-#### Installation  
+#### Installation
 
   - CLI installation: `npm install bitmex-node`
   - Create API keys: https://www.bitmex.com/app/apiKeys

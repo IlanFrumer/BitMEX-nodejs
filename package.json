@@ -1,20 +1,14 @@
 {
     "name": "@strong-roots-capital/bitmex-node",
-    "version": "1.9.3",
+    "version": "0.0.0-semantically-released",
     "description": "",
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
     "scripts": {
         "build": "tsc -p src/",
         "clean": "rm -rf dist/",
-        "deploy": "git pull --rebase origin master && git push origin master",
-        "major": "npm version major && npm publish",
-        "minor": "npm version minor && npm publish",
-        "patch": "npm version patch && npm publish",
-        "postpublish": "git push origin master --follow-tags",
         "prepublishOnly": "npm run build -s",
-        "generate": "node dist/generator/apiGenerator.js",
-        "watch": "npm run build -- --watch"
+        "generate": "node dist/generator/apiGenerator.js"
     },
     "author": "Ilan Frumer <ilanfrumer@gmail.com>",
     "license": "MIT",
@@ -27,11 +21,13 @@
         "ws": "^7.3.1"
     },
     "devDependencies": {
+        "@semantic-release/git": "^10.0.1",
         "@types/app-root-path": "^1.2.4",
         "@types/debug": "4.1.5",
         "@types/node": "^14.0.23",
         "@types/request": "^2.48.5",
         "@types/ws": "^7.2.6",
+        "semantic-release": "^18.0.0",
         "typescript": "~3.9.7",
         "typescript-formatter": "^7.2.2"
     },
