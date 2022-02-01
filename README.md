@@ -4,7 +4,7 @@
 
 #### Installation  
 
-  - CLI installation: `npm install bitmex-node`
+  - CLI installation: `npm install bitmex-node`22
   - Create API keys: https://www.bitmex.com/app/apiKeys
   - Recommended code editor: [Visual studio code](https://code.visualstudio.com/)
 
